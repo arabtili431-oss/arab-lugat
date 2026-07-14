@@ -1,179 +1,595 @@
 <!DOCTYPE html>
-<html>
+<html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <title>Arabcha Lug'at</title>
-    <link rel="manifest" href="manifest.json">
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arabcha Lug'at</title>
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#10192E;
+    --night-2:#17233F;
+    --night-3:#1E2C4D;
+    --gold:#D4AF6A;
+    --gold-dim:#8C7038;
+    --teal:#2FBFAE;
+    --text:#F2EAD3;
+    --text-muted:#8D96AE;
+    --line: rgba(212,175,106,0.18);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Inter', sans-serif;
+    background: radial-gradient(circle at 20% 0%, #16233f 0%, #0b1220 70%);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    color:var(--text);
+  }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            text-align: center;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            min-height: 100vh;
-            color: white;
-        }
+  .phone{
+    width:390px;
+    max-width:100%;
+    height:780px;
+    background:var(--night);
+    border-radius:36px;
+    border:1px solid var(--line);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+    overflow:hidden;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+  }
 
-        h1 {
-            font-size: 32px;
-            margin-bottom: 30px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
+  .star-pattern{
+    position:absolute;
+    inset:0;
+    opacity:0.05;
+    background-image:
+      radial-gradient(circle, var(--gold) 1px, transparent 1px);
+    background-size: 26px 26px;
+    pointer-events:none;
+  }
 
-        .qidiruv-box {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
+  .screen{
+    display:none;
+    flex-direction:column;
+    height:100%;
+    position:relative;
+    z-index:1;
+  }
+  .screen.active{ display:flex; }
 
-        input {
-            padding: 14px;
-            width: 100%;
-            font-size: 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            margin-bottom: 12px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
+  .screen-body{
+    flex:1;
+    overflow-y:auto;
+    padding:36px 28px 20px;
+  }
 
-        input:focus {
-            border-color: #2a5298;
-        }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:10px;
+    font-weight:600;
+  }
 
-        button {
-            padding: 14px 30px;
-            font-size: 16px;
-            font-weight: 600;
-            border: none;
-            border-radius: 10px;
-            background: #2a5298;
-            color: white;
-            cursor: pointer;
-            transition: background 0.2s;
-            width: 100%;
-        }
+  h1.title{
+    font-family:'Amiri', serif;
+    font-size:30px;
+    font-weight:700;
+    color:var(--text);
+    margin-bottom:8px;
+  }
 
-        button:hover {
-            background: #1e3c72;
-        }
+  .subtitle{
+    font-size:14px;
+    color:var(--text-muted);
+    margin-bottom:32px;
+    line-height:1.6;
+  }
 
-        #natija {
-            margin-top: 20px;
-            font-size: 22px;
-            color: #1e3c72;
-            min-height: 30px;
-            font-weight: 500;
-        }
-    </style>
+  .field{
+    margin-bottom:18px;
+  }
+  .field label{
+    display:block;
+    font-size:12px;
+    color:var(--text-muted);
+    margin-bottom:6px;
+    letter-spacing:0.5px;
+  }
+  .field input, .field select{
+    width:100%;
+    background:var(--night-2);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 16px;
+    color:var(--text);
+    font-size:15px;
+    font-family:'Inter', sans-serif;
+    outline:none;
+    transition:border-color 0.2s;
+  }
+  .field input:focus, .field select:focus{
+    border-color:var(--gold);
+  }
+  .field input::placeholder{ color: #55607a; }
+
+  .row-3{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:10px;
+  }
+
+  .btn-primary{
+    width:100%;
+    padding:15px;
+    border-radius:12px;
+    border:none;
+    background:linear-gradient(135deg, var(--gold), var(--gold-dim));
+    color:#20160a;
+    font-weight:700;
+    font-size:15px;
+    cursor:pointer;
+    font-family:'Inter', sans-serif;
+    letter-spacing:0.3px;
+  }
+  .btn-primary:active{ transform:scale(0.98); }
+
+  .dots{
+    display:flex;
+    gap:6px;
+    margin-top:22px;
+    justify-content:center;
+  }
+  .dot{ width:6px; height:6px; border-radius:50%; background:var(--line); }
+  .dot.on{ background:var(--gold); width:18px; border-radius:4px; }
+
+  .lang-toggle{
+    display:flex;
+    background:var(--night-2);
+    border-radius:12px;
+    padding:4px;
+    margin-bottom:18px;
+    border:1px solid var(--line);
+  }
+  .lang-toggle button{
+    flex:1;
+    padding:10px;
+    border:none;
+    background:transparent;
+    color:var(--text-muted);
+    border-radius:9px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    font-family:'Inter', sans-serif;
+  }
+  .lang-toggle button.active{
+    background:var(--gold);
+    color:#20160a;
+  }
+
+  .search-wrap{
+    display:flex;
+    gap:8px;
+    margin-bottom:20px;
+  }
+  .search-wrap input{
+    flex:1;
+    background:var(--night-2);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 16px;
+    color:var(--text);
+    font-size:15px;
+    outline:none;
+  }
+  .search-wrap input:focus{ border-color:var(--gold); }
+  .search-btn{
+    width:52px;
+    background:var(--gold);
+    border:none;
+    border-radius:12px;
+    color:#20160a;
+    font-size:18px;
+    cursor:pointer;
+  }
+
+  .result-card{
+    background:var(--night-2);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:26px;
+    text-align:center;
+    margin-bottom:16px;
+    min-height:110px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  }
+  .result-arabic{
+    font-family:'Amiri', serif;
+    font-size:38px;
+    color:var(--gold);
+    margin-bottom:8px;
+    direction:rtl;
+  }
+  .result-translit{
+    font-size:13px;
+    color:var(--teal);
+    letter-spacing:0.5px;
+  }
+  .result-empty{
+    color:var(--text-muted);
+    font-size:13px;
+  }
+
+  .word-list-label{
+    font-size:12px;
+    color:var(--text-muted);
+    margin: 20px 0 10px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+  }
+  .word-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--night-2);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:8px 14px;
+    margin:0 6px 8px 0;
+    font-size:13px;
+    color:var(--text);
+    cursor:pointer;
+  }
+  .word-chip:hover{ border-color:var(--gold); }
+
+  .about-block{
+    background:var(--night-2);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:22px;
+    font-size:14px;
+    line-height:1.8;
+    color:var(--text-muted);
+  }
+  .about-block b{ color:var(--gold); }
+
+  .help-item{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:var(--night-2);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+    text-decoration:none;
+    color:var(--text);
+    cursor:pointer;
+  }
+  .help-icon{
+    width:38px; height:38px;
+    border-radius:10px;
+    background:rgba(212,175,106,0.12);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--gold);
+    font-size:18px;
+    flex-shrink:0;
+  }
+  .help-item div p{ font-size:14px; font-weight:600; }
+  .help-item div span{ font-size:12px; color:var(--text-muted); }
+
+  .avatar{
+    width:76px; height:76px;
+    border-radius:50%;
+    background:linear-gradient(135deg, var(--gold), var(--teal));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Amiri', serif;
+    font-size:28px;
+    color:var(--night);
+    font-weight:700;
+    margin:0 auto 24px;
+  }
+
+  .profile-field{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+    font-size:14px;
+  }
+  .profile-field span:first-child{ color:var(--text-muted); }
+  .profile-field span:last-child{ color:var(--text); font-weight:500; }
+
+  .navbar{
+    display:flex;
+    border-top:1px solid var(--line);
+    background:var(--night-2);
+    padding:10px 0 16px;
+  }
+  .nav-item{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    color:var(--text-muted);
+    cursor:pointer;
+    font-size:11px;
+    font-weight:500;
+    background:none;
+    border:none;
+    font-family:'Inter', sans-serif;
+  }
+  .nav-item.active{ color:var(--gold); }
+  .nav-item svg{ width:20px; height:20px; }
+</style>
 </head>
 <body>
 
-<h1>📖 Arabcha Lug'at</h1>
+<div class="phone">
+  <div class="star-pattern"></div>
 
-<div class="qidiruv-box">
-    <input type="text" id="qidiruv" placeholder="O'zbekcha so'z kiriting..." onkeypress="if(event.key === 'Enter') qidir()">
-    <button onclick="qidir()">Qidirish</button>
-    <div id="natija"></div>
+  <div class="screen active" id="screen-kirish1">
+    <div class="screen-body">
+      <div class="eyebrow">1 / 2</div>
+      <h1 class="title">Sizni tanishtiring</h1>
+      <p class="subtitle">Arab tili safariga birga chiqamiz. Avval ismingiz bilan tanishaylik.</p>
+      <div class="field">
+        <label>Ism</label>
+        <input type="text" id="kirish-ism" placeholder="Ismingizni kiriting">
+      </div>
+      <div class="field">
+        <label>Familiya</label>
+        <input type="text" id="kirish-familiya" placeholder="Familiyangizni kiriting">
+      </div>
+      <button class="btn-primary" onclick="goScreen('screen-kirish2')">Keyingisi</button>
+      <div class="dots"><div class="dot on"></div><div class="dot"></div></div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-kirish2">
+    <div class="screen-body">
+      <div class="eyebrow">2 / 2</div>
+      <h1 class="title">Tug'ilgan sanangiz</h1>
+      <p class="subtitle">Bu ma'lumot sizga mos darslarni tavsiya qilishga yordam beradi.</p>
+      <div class="row-3">
+        <div class="field">
+          <label>Yil</label>
+          <input type="text" placeholder="2005">
+        </div>
+        <div class="field">
+          <label>Oy</label>
+          <input type="text" placeholder="07">
+        </div>
+        <div class="field">
+          <label>Kun</label>
+          <input type="text" placeholder="14">
+        </div>
+      </div>
+      <button class="btn-primary" onclick="goScreen('screen-app'); setTab('qidiruv')">Boshlash</button>
+      <div class="dots"><div class="dot"></div><div class="dot on"></div></div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-app">
+    <div class="screen-body" id="tab-qidiruv">
+      <h1 class="title" style="font-size:24px;">Qidiruv</h1>
+      <p class="subtitle" style="margin-bottom:20px;">So'zni ikkala tilda ham qidirishingiz mumkin.</p>
+
+      <div class="lang-toggle">
+        <button class="active" id="lang-uz" onclick="setLang('uz')">O'zbekcha</button>
+        <button id="lang-ar" onclick="setLang('ar')">Arabcha</button>
+      </div>
+
+      <div class="search-wrap">
+        <input type="text" id="qidiruv" placeholder="So'z kiriting..." onkeypress="if(event.key==='Enter') qidir()">
+        <button class="search-btn" onclick="qidir()">&#8594;</button>
+      </div>
+
+      <div class="result-card" id="natija-card">
+        <span class="result-empty">Natija shu yerda chiqadi</span>
+      </div>
+
+      <div class="word-list-label">Tavsiya etilgan so'zlar</div>
+      <div id="chip-list"></div>
+    </div>
+
+    <div class="screen-body" id="tab-dastur" style="display:none;">
+      <h1 class="title" style="font-size:24px;">Dastur haqida</h1>
+      <div class="about-block">
+        <p><b>Arabcha Lug'at</b> — A1 darajadagi arab tili o'rganuvchilar uchun yaratilgan kichik lug'at ilovasi.</p><br>
+        <p>Ilova kundalik hayotda tez-tez ishlatiladigan so'zlarni o'z ichiga oladi: salomlashish, oila, ranglar, sonlar, fe'llar va boshqalar.</p><br>
+        <p>Loyiha hozircha rivojlanish bosqichida — yaqin orada yangi so'zlar, ovozli talaffuz va boshqa foydali funksiyalar qo'shiladi.</p>
+      </div>
+    </div>
+
+    <div class="screen-body" id="tab-yordam" style="display:none;">
+      <h1 class="title" style="font-size:24px;">Yordam</h1>
+      <p class="subtitle" style="margin-bottom:20px;">Savol yoki taklifingiz bo'lsa, biz bilan bog'laning.</p>
+      <a class="help-item" href="#">
+        <div class="help-icon">&#9992;</div>
+        <div><p>Telegram</p><span>@ali_arabiy</span></div>
+      </a>
+      <a class="help-item" href="#">
+        <div class="help-icon">&#9654;</div>
+        <div><p>YouTube</p><span>@Ali_Arabiy1</span></div>
+      </a>
+      <a class="help-item" href="#">
+        <div class="help-icon">&#9679;</div>
+        <div><p>Instagram</p><span>@ali_arabiy</span></div>
+      </a>
+      <a class="help-item" href="#">
+        <div class="help-icon">&#9993;</div>
+        <div><p>Admin bilan bog'lanish</p><span>Savollaringizga javob beramiz</span></div>
+      </a>
+    </div>
+
+    <div class="screen-body" id="tab-profil" style="display:none;">
+      <div class="avatar" id="avatar-initials">AA</div>
+      <div class="profile-field"><span>Ism</span><span id="p-ism">—</span></div>
+      <div class="profile-field"><span>Familiya</span><span id="p-familiya">—</span></div>
+      <div class="profile-field"><span>Email</span><span>—</span></div>
+      <div class="profile-field"><span>Nomer</span><span>—</span></div>
+      <div class="profile-field"><span>Davlat</span><span>O'zbekiston</span></div>
+      <div class="profile-field"><span>Til</span><span>O'zbekcha</span></div>
+    </div>
+
+    <div class="navbar">
+      <button class="nav-item active" id="navbtn-qidiruv" onclick="setTab('qidiruv')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Qidiruv
+      </button>
+      <button class="nav-item" id="navbtn-dastur" onclick="setTab('dastur')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        Dastur
+      </button>
+      <button class="nav-item" id="navbtn-yordam" onclick="setTab('yordam')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.09 9a3 3 0 1 1 5.83 1c0 2-3 2-3 4"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Yordam
+      </button>
+      <button class="nav-item" id="navbtn-profil" onclick="setTab('profil')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        Profil
+      </button>
+    </div>
+  </div>
 </div>
 
 <script>
-    const sozlar = [
-        {arabcha: "كِتَاب", translit: "kitab", uzbekcha: "kitob"},
-        {arabcha: "بَيْت", translit: "bayt", uzbekcha: "uy"},
-        {arabcha: "مَاء", translit: "ma'", uzbekcha: "suv"},
+  const sozlar = [
+    {arabcha:"كِتَاب", translit:"kitab", uzbekcha:"kitob"},
+    {arabcha:"بَيْت", translit:"bayt", uzbekcha:"uy"},
+    {arabcha:"مَاء", translit:"ma'", uzbekcha:"suv"},
+    {arabcha:"سَلَام", translit:"salam", uzbekcha:"salom"},
+    {arabcha:"شُكْرًا", translit:"shukran", uzbekcha:"rahmat"},
+    {arabcha:"عَفْوًا", translit:"afwan", uzbekcha:"arzimaydi"},
+    {arabcha:"نَعَم", translit:"na'am", uzbekcha:"ha"},
+    {arabcha:"لَا", translit:"la", uzbekcha:"yo'q"},
+    {arabcha:"أُمّ", translit:"umm", uzbekcha:"ona"},
+    {arabcha:"أَب", translit:"ab", uzbekcha:"ota"},
+    {arabcha:"أَخ", translit:"akh", uzbekcha:"aka/uka"},
+    {arabcha:"أُخْت", translit:"ukht", uzbekcha:"opa/singil"},
+    {arabcha:"اِبْن", translit:"ibn", uzbekcha:"o'g'il"},
+    {arabcha:"اِبْنَة", translit:"ibnah", uzbekcha:"qiz"},
+    {arabcha:"جَدّ", translit:"jadd", uzbekcha:"bobo"},
+    {arabcha:"جَدَّة", translit:"jaddah", uzbekcha:"buvi"},
+    {arabcha:"قَلَم", translit:"qalam", uzbekcha:"qalam"},
+    {arabcha:"بَاب", translit:"bab", uzbekcha:"eshik"},
+    {arabcha:"نَافِذَة", translit:"nafidhah", uzbekcha:"deraza"},
+    {arabcha:"طَاوِلَة", translit:"tawilah", uzbekcha:"stol"},
+    {arabcha:"كُرْسِيّ", translit:"kursiyy", uzbekcha:"stul"},
+    {arabcha:"مِفْتَاح", translit:"miftah", uzbekcha:"kalit"},
+    {arabcha:"خُبْز", translit:"khubz", uzbekcha:"non"},
+    {arabcha:"لَحْم", translit:"lahm", uzbekcha:"go'sht"},
+    {arabcha:"تُفَّاح", translit:"tuffah", uzbekcha:"olma"},
+    {arabcha:"حَلِيب", translit:"halib", uzbekcha:"sut"},
+    {arabcha:"شَاي", translit:"shay", uzbekcha:"choy"},
+    {arabcha:"أَحْمَر", translit:"ahmar", uzbekcha:"qizil"},
+    {arabcha:"أَزْرَق", translit:"azraq", uzbekcha:"ko'k"},
+    {arabcha:"أَخْضَر", translit:"akhdar", uzbekcha:"yashil"},
+    {arabcha:"أَصْفَر", translit:"asfar", uzbekcha:"sariq"},
+    {arabcha:"أَبْيَض", translit:"abyad", uzbekcha:"oq"},
+    {arabcha:"أَسْوَد", translit:"aswad", uzbekcha:"qora"},
+    {arabcha:"وَاحِد", translit:"wahid", uzbekcha:"bir"},
+    {arabcha:"اِثْنَان", translit:"ithnan", uzbekcha:"ikki"},
+    {arabcha:"ثَلَاثَة", translit:"thalathah", uzbekcha:"uch"},
+    {arabcha:"أَرْبَعَة", translit:"arba'ah", uzbekcha:"to'rt"},
+    {arabcha:"خَمْسَة", translit:"khamsah", uzbekcha:"besh"},
+    {arabcha:"يَوْم", translit:"yawm", uzbekcha:"kun"},
+    {arabcha:"لَيْل", translit:"layl", uzbekcha:"tun"},
+    {arabcha:"صَبَاح", translit:"sabah", uzbekcha:"ertalab"},
+    {arabcha:"مَسَاء", translit:"masa'", uzbekcha:"kechqurun"},
+    {arabcha:"أُسْبُوع", translit:"usbu'", uzbekcha:"hafta"},
+    {arabcha:"أَكَلَ", translit:"akala", uzbekcha:"yedi"},
+    {arabcha:"شَرِبَ", translit:"shariba", uzbekcha:"ichdi"},
+    {arabcha:"ذَهَبَ", translit:"dhahaba", uzbekcha:"bordi"},
+    {arabcha:"جَلَسَ", translit:"jalasa", uzbekcha:"o'tirdi"},
+    {arabcha:"قَرَأَ", translit:"qara'a", uzbekcha:"o'qidi"},
+    {arabcha:"مَدْرَسَة", translit:"madrasah", uzbekcha:"maktab"},
+    {arabcha:"مَسْجِد", translit:"masjid", uzbekcha:"masjid"},
+    {arabcha:"سُوق", translit:"suq", uzbekcha:"bozor"},
+    {arabcha:"مُسْتَشْفَى", translit:"mustashfa", uzbekcha:"kasalxona"},
+    {arabcha:"مَطْعَم", translit:"mat'am", uzbekcha:"restoran"}
+  ];
 
-        // Salomlashish
-        {arabcha: "سَلَام", translit: "salam", uzbekcha: "salom"},
-        {arabcha: "شُكْرًا", translit: "shukran", uzbekcha: "rahmat"},
-        {arabcha: "عَفْوًا", translit: "afwan", uzbekcha: "arzimaydi"},
-        {arabcha: "نَعَم", translit: "na'am", uzbekcha: "ha"},
-        {arabcha: "لَا", translit: "la", uzbekcha: "yo'q"},
+  let currentLang = 'uz';
 
-        // Oila
-        {arabcha: "أُمّ", translit: "umm", uzbekcha: "ona"},
-        {arabcha: "أَب", translit: "ab", uzbekcha: "ota"},
-        {arabcha: "أَخ", translit: "akh", uzbekcha: "aka/uka"},
-        {arabcha: "أُخْت", translit: "ukht", uzbekcha: "opa/singil"},
-        {arabcha: "اِبْن", translit: "ibn", uzbekcha: "o'g'il"},
-        {arabcha: "اِبْنَة", translit: "ibnah", uzbekcha: "qiz"},
-        {arabcha: "جَدّ", translit: "jadd", uzbekcha: "bobo"},
-        {arabcha: "جَدَّة", translit: "jaddah", uzbekcha: "buvi"},
-
-        // Uy va narsalar
-        {arabcha: "قَلَم", translit: "qalam", uzbekcha: "qalam"},
-        {arabcha: "بَاب", translit: "bab", uzbekcha: "eshik"},
-        {arabcha: "نَافِذَة", translit: "nafidhah", uzbekcha: "deraza"},
-        {arabcha: "طَاوِلَة", translit: "tawilah", uzbekcha: "stol"},
-        {arabcha: "كُرْسِيّ", translit: "kursiyy", uzbekcha: "stul"},
-        {arabcha: "مِفْتَاح", translit: "miftah", uzbekcha: "kalit"},
-
-        // Ovqat va ichimlik
-        {arabcha: "خُبْز", translit: "khubz", uzbekcha: "non"},
-        {arabcha: "لَحْم", translit: "lahm", uzbekcha: "go'sht"},
-        {arabcha: "تُفَّاح", translit: "tuffah", uzbekcha: "olma"},
-        {arabcha: "حَلِيب", translit: "halib", uzbekcha: "sut"},
-        {arabcha: "شَاي", translit: "shay", uzbekcha: "choy"},
-
-        // Ranglar
-        {arabcha: "أَحْمَر", translit: "ahmar", uzbekcha: "qizil"},
-        {arabcha: "أَزْرَق", translit: "azraq", uzbekcha: "ko'k"},
-        {arabcha: "أَخْضَر", translit: "akhdar", uzbekcha: "yashil"},
-        {arabcha: "أَصْفَر", translit: "asfar", uzbekcha: "sariq"},
-        {arabcha: "أَبْيَض", translit: "abyad", uzbekcha: "oq"},
-        {arabcha: "أَسْوَد", translit: "aswad", uzbekcha: "qora"},
-
-        // Sonlar
-        {arabcha: "وَاحِد", translit: "wahid", uzbekcha: "bir"},
-        {arabcha: "اِثْنَان", translit: "ithnan", uzbekcha: "ikki"},
-        {arabcha: "ثَلَاثَة", translit: "thalathah", uzbekcha: "uch"},
-        {arabcha: "أَرْبَعَة", translit: "arba'ah", uzbekcha: "to'rt"},
-        {arabcha: "خَمْسَة", translit: "khamsah", uzbekcha: "besh"},
-
-        // Vaqt
-        {arabcha: "يَوْم", translit: "yawm", uzbekcha: "kun"},
-        {arabcha: "لَيْل", translit: "layl", uzbekcha: "tun"},
-        {arabcha: "صَبَاح", translit: "sabah", uzbekcha: "ertalab"},
-        {arabcha: "مَسَاء", translit: "masa'", uzbekcha: "kechqurun"},
-        {arabcha: "أُسْبُوع", translit: "usbu'", uzbekcha: "hafta"},
-
-        // Fe'llar
-        {arabcha: "أَكَلَ", translit: "akala", uzbekcha: "yedi"},
-        {arabcha: "شَرِبَ", translit: "shariba", uzbekcha: "ichdi"},
-        {arabcha: "ذَهَبَ", translit: "dhahaba", uzbekcha: "bordi"},
-        {arabcha: "جَلَسَ", translit: "jalasa", uzbekcha: "o'tirdi"},
-        {arabcha: "قَرَأَ", translit: "qara'a", uzbekcha: "o'qidi"},
-
-        // Joylar
-        {arabcha: "مَدْرَسَة", translit: "madrasah", uzbekcha: "maktab"},
-        {arabcha: "مَسْجِد", translit: "masjid", uzbekcha: "masjid"},
-        {arabcha: "سُوق", translit: "suq", uzbekcha: "bozor"},
-        {arabcha: "مُسْتَشْفَى", translit: "mustashfa", uzbekcha: "kasalxona"},
-        {arabcha: "مَطْعَم", translit: "mat'am", uzbekcha: "restoran"},
-    ];
-
-    function qidir() {
-        const soz = document.getElementById("qidiruv").value.trim();
-        const natijaDiv = document.getElementById("natija");
-        const topilgan = sozlar.find(s => s.uzbekcha.toLowerCase() === soz.toLowerCase());
-
-        if (topilgan) {
-            natijaDiv.innerHTML = "Topildi: " + topilgan.arabcha + " (" + topilgan.translit + ")";
-        } else {
-            natijaDiv.innerHTML = "Bu so'z lug'atda yo'q";
-        }
+  function goScreen(id){
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if(id === 'screen-app'){
+      const ism = document.getElementById('kirish-ism').value.trim() || 'Foydalanuvchi';
+      const familiya = document.getElementById('kirish-familiya').value.trim();
+      document.getElementById('p-ism').textContent = ism;
+      document.getElementById('p-familiya').textContent = familiya || '—';
+      const initials = (ism[0] || 'A') + (familiya[0] || 'A');
+      document.getElementById('avatar-initials').textContent = initials.toUpperCase();
+      renderChips();
     }
+  }
 
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js');
+  function setTab(tab){
+    ['qidiruv','dastur','yordam','profil'].forEach(t => {
+      document.getElementById('tab-' + t).style.display = (t === tab) ? 'block' : 'none';
+      document.getElementById('navbtn-' + t).classList.toggle('active', t === tab);
+    });
+  }
+
+  function setLang(lang){
+    currentLang = lang;
+    document.getElementById('lang-uz').classList.toggle('active', lang === 'uz');
+    document.getElementById('lang-ar').classList.toggle('active', lang === 'ar');
+    document.getElementById('qidiruv').placeholder = lang === 'uz' ? "O'zbekcha so'z kiriting..." : "Arabcha so'z kiriting...";
+  }
+
+  function qidir(){
+    const soz = document.getElementById('qidiruv').value.trim();
+    const card = document.getElementById('natija-card');
+    if(!soz){ return; }
+    let topilgan;
+    if(currentLang === 'uz'){
+      topilgan = sozlar.find(s => s.uzbekcha.toLowerCase() === soz.toLowerCase());
+    } else {
+      topilgan = sozlar.find(s => s.arabcha === soz || s.translit.toLowerCase() === soz.toLowerCase());
     }
+    if(topilgan){
+      card.innerHTML = '<div class="result-arabic">' + topilgan.arabcha + '</div><div class="result-translit">' + topilgan.translit + ' &middot; ' + topilgan.uzbekcha + '</div>';
+    } else {
+      card.innerHTML = '<span class="result-empty">Bu so\'z lug\'atda topilmadi</span>';
+    }
+  }
+
+  function renderChips(){
+    const wrap = document.getElementById('chip-list');
+    const sample = sozlar.slice(3, 11);
+    wrap.innerHTML = sample.map(s =>
+      '<span class="word-chip" onclick="showChip(\'' + s.uzbekcha + '\')">' + s.uzbekcha + '</span>'
+    ).join('');
+  }
+
+  function showChip(uz){
+    setLang('uz');
+    document.getElementById('qidiruv').value = uz;
+    qidir();
+  }
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  }
 </script>
 
 </body>
