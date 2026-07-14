@@ -14,7 +14,7 @@
 <body>
 
 <h1>Arabcha Lug'at</h1>
-<input type="text" id="qidiruv" placeholder="O'zbekcha so'z kiriting...">
+<input type="text" id="qidiruv" placeholder="O'zbekcha so'z kiriting..." onkeypress="if(event.key === 'Enter') qidir()">
 <button onclick="qidir()">Qidirish</button>
 <div id="natija"></div>
 
@@ -96,7 +96,7 @@
     function qidir() {
         const soz = document.getElementById("qidiruv").value.trim();
         const natijaDiv = document.getElementById("natija");
-        const topilgan = sozlar.find(s => s.uzbekcha === soz);
+       const topilgan = sozlar.find(s => s.uzbekcha.toLowerCase() === soz.toLowerCase());
 
         if (topilgan) {
             natijaDiv.innerHTML = "Topildi: " + topilgan.arabcha + " (" + topilgan.translit + ")";
