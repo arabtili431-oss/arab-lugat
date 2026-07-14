@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Arabcha Lug'at</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body { font-family: Arial; max-width: 500px; margin: 50px auto; text-align: center; }
+        input { padding: 10px; width: 250px; font-size: 16px; }
+        button { padding: 10px 20px; font-size: 16px; }
+        #natija { margin-top: 20px; font-size: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Arabcha Lug'at</h1>
+<input type="text" id="qidiruv" placeholder="O'zbekcha so'z kiriting...">
+<button onclick="qidir()">Qidirish</button>
+<div id="natija"></div>
+
+<script>
+    const sozlar = [
+        {arabcha: "كِتَاب", translit: "kitab", uzbekcha: "kitob"},
+        {arabcha: "بَيْت", translit: "bayt", uzbekcha: "uy"},
+        {arabcha: "مَاء", translit: "ma'", uzbekcha: "suv"},
+
+        // Salomlashish
+        {arabcha: "سَلَام", translit: "salam", uzbekcha: "salom"},
+        {arabcha: "شُكْرًا", translit: "shukran", uzbekcha: "rahmat"},
+        {arabcha: "عَفْوًا", translit: "afwan", uzbekcha: "arzimaydi"},
+        {arabcha: "نَعَم", translit: "na'am", uzbekcha: "ha"},
+        {arabcha: "لَا", translit: "la", uzbekcha: "yo'q"},
+
+        // Oila
+        {arabcha: "أُمّ", translit: "umm", uzbekcha: "ona"},
+        {arabcha: "أَب", translit: "ab", uzbekcha: "ota"},
+        {arabcha: "أَخ", translit: "akh", uzbekcha: "aka/uka"},
+        {arabcha: "أُخْت", translit: "ukht", uzbekcha: "opa/singil"},
+        {arabcha: "اِبْن", translit: "ibn", uzbekcha: "o'g'il"},
+        {arabcha: "اِبْنَة", translit: "ibnah", uzbekcha: "qiz"},
+        {arabcha: "جَدّ", translit: "jadd", uzbekcha: "bobo"},
+        {arabcha: "جَدَّة", translit: "jaddah", uzbekcha: "buvi"},
+
+        // Uy va narsalar
+        {arabcha: "قَلَم", translit: "qalam", uzbekcha: "qalam"},
+        {arabcha: "بَاب", translit: "bab", uzbekcha: "eshik"},
+        {arabcha: "نَافِذَة", translit: "nafidhah", uzbekcha: "deraza"},
+        {arabcha: "طَاوِلَة", translit: "tawilah", uzbekcha: "stol"},
+        {arabcha: "كُرْسِيّ", translit: "kursiyy", uzbekcha: "stul"},
+        {arabcha: "مِفْتَاح", translit: "miftah", uzbekcha: "kalit"},
+
+        // Ovqat va ichimlik
+        {arabcha: "خُبْز", translit: "khubz", uzbekcha: "non"},
+        {arabcha: "لَحْم", translit: "lahm", uzbekcha: "go'sht"},
+        {arabcha: "تُفَّاح", translit: "tuffah", uzbekcha: "olma"},
+        {arabcha: "حَلِيب", translit: "halib", uzbekcha: "sut"},
+        {arabcha: "شَاي", translit: "shay", uzbekcha: "choy"},
+
+        // Ranglar
+        {arabcha: "أَحْمَر", translit: "ahmar", uzbekcha: "qizil"},
+        {arabcha: "أَزْرَق", translit: "azraq", uzbekcha: "ko'k"},
+        {arabcha: "أَخْضَر", translit: "akhdar", uzbekcha: "yashil"},
+        {arabcha: "أَصْفَر", translit: "asfar", uzbekcha: "sariq"},
+        {arabcha: "أَبْيَض", translit: "abyad", uzbekcha: "oq"},
+        {arabcha: "أَسْوَد", translit: "aswad", uzbekcha: "qora"},
+
+        // Sonlar
+        {arabcha: "وَاحِد", translit: "wahid", uzbekcha: "bir"},
+        {arabcha: "اِثْنَان", translit: "ithnan", uzbekcha: "ikki"},
+        {arabcha: "ثَلَاثَة", translit: "thalathah", uzbekcha: "uch"},
+        {arabcha: "أَرْبَعَة", translit: "arba'ah", uzbekcha: "to'rt"},
+        {arabcha: "خَمْسَة", translit: "khamsah", uzbekcha: "besh"},
+
+        // Vaqt
+        {arabcha: "يَوْم", translit: "yawm", uzbekcha: "kun"},
+        {arabcha: "لَيْل", translit: "layl", uzbekcha: "tun"},
+        {arabcha: "صَبَاح", translit: "sabah", uzbekcha: "ertalab"},
+        {arabcha: "مَسَاء", translit: "masa'", uzbekcha: "kechqurun"},
+        {arabcha: "أُسْبُوع", translit: "usbu'", uzbekcha: "hafta"},
+
+        // Fe'llar
+        {arabcha: "أَكَلَ", translit: "akala", uzbekcha: "yedi"},
+        {arabcha: "شَرِبَ", translit: "shariba", uzbekcha: "ichdi"},
+        {arabcha: "ذَهَبَ", translit: "dhahaba", uzbekcha: "bordi"},
+        {arabcha: "جَلَسَ", translit: "jalasa", uzbekcha: "o'tirdi"},
+        {arabcha: "قَرَأَ", translit: "qara'a", uzbekcha: "o'qidi"},
+
+        // Joylar
+        {arabcha: "مَدْرَسَة", translit: "madrasah", uzbekcha: "maktab"},
+        {arabcha: "مَسْجِد", translit: "masjid", uzbekcha: "masjid"},
+        {arabcha: "سُوق", translit: "suq", uzbekcha: "bozor"},
+        {arabcha: "مُسْتَشْفَى", translit: "mustashfa", uzbekcha: "kasalxona"},
+        {arabcha: "مَطْعَم", translit: "mat'am", uzbekcha: "restoran"},
+    ];
+
+    function qidir() {
+        const soz = document.getElementById("qidiruv").value.trim();
+        const natijaDiv = document.getElementById("natija");
+        const topilgan = sozlar.find(s => s.uzbekcha === soz);
+
+        if (topilgan) {
+            natijaDiv.innerHTML = "Topildi: " + topilgan.arabcha + " (" + topilgan.translit + ")";
+        } else {
+            natijaDiv.innerHTML = "Bu so'z lug'atda yo'q";
+        }
+    }
+</script>
+
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
+    }
+</script>
+
+</body>
+</html>
