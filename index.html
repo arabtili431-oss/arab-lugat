@@ -419,14 +419,18 @@
   </div>
 </div>
 
-        <div class="field">
-          <label>Davlat</label>
-          <input type="text" id="kirish-davlat" placeholder="O'zbekiston">
-        </div>
-        <div class="field">
-          <label>Telefon raqam</label>
-          <input type="text" id="kirish-nomer" placeholder="+998 90 123 45 67">
-        </div>
+       <div class="field">
+  <label>Davlat</label>
+  <input type="text" id="kirish-davlat" list="davlat-royxati-1" placeholder="Davlat nomini yozing" oninput="kodniYangila('kirish')" autocomplete="off">
+  <datalist id="davlat-royxati-1"></datalist>
+</div>
+<div class="field">
+  <label>Telefon raqam</label>
+  <div style="display:flex; gap:8px;">
+    <span id="kirish-kod" style="background:var(--night-2); border:1px solid var(--line); border-radius:12px; padding:14px 12px; color:var(--gold); font-weight:600; white-space:nowrap;">+</span>
+   <input type="text" id="kirish-nomer" placeholder="90 123 45 67" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)">
+  </div>
+</div>
 <p id="yosh-xato" style="color:#E24B4A; font-size:12px; margin-bottom:14px; display:none;"></p>
 <button class="btn-primary" onclick="tekshirVaBoshla()">Boshlash</button>
       <div class="dots"><div class="dot"></div><div class="dot on"></div></div>
@@ -452,8 +456,14 @@
         <span class="result-empty">Natija shu yerda chiqadi</span>
       </div>
 
-      <div class="word-list-label">Tavsiya etilgan so'zlar</div>
-      <div id="chip-list"></div>
+      <div class="word-list-label" id="tarix-label" style="display:none;">
+  Qidiruv tarixi
+  <span style="float:right; color:var(--teal); cursor:pointer; text-transform:none; font-weight:400;" onclick="tarixniTozala()">Tozalash</span>
+</div>
+<div id="tarix-list"></div>
+
+<div class="word-list-label">Tavsiya etilgan so'zlar</div>
+<div id="chip-list"></div>
     </div>
 
     <div class="screen-body" id="tab-dastur" style="display:none;">
@@ -487,7 +497,9 @@
     </div>
 
    <div class="screen-body" id="tab-profil" style="display:none;">
-  <div class="avatar" id="avatar-initials">AA</div>
+    <div class="avatar" id="avatar-initials" style="cursor:pointer; background-size:cover; background-position:center;" onclick="document.getElementById('rasm-input').click()">AA</div>
+<input type="file" id="rasm-input" accept="image/*" style="display:none;" onchange="rasmYukla(event)">
+<p style="text-align:center; font-size:11px; color:var(--text-muted); margin-top:-16px; margin-bottom:20px;">Rasmni o'zgartirish uchun bosing</p>
   <div class="profile-field"><span>Ism</span><span id="p-ism">—</span></div>
   <div class="profile-field"><span>Familiya</span><span id="p-familiya">—</span></div>
 
@@ -495,14 +507,18 @@
     <label>Email</label>
     <input type="text" id="p-email" placeholder="email@misol.com">
   </div>
-  <div class="field">
-    <label>Telefon raqam</label>
-    <input type="text" id="p-nomer" placeholder="+998 90 123 45 67">
+ <div class="field">
+  <label>Davlat</label>
+  <input type="text" id="p-davlat" list="davlat-royxati-2" placeholder="Davlat nomini yozing" oninput="kodniYangila('p')" autocomplete="off">
+  <datalist id="davlat-royxati-2"></datalist>
+</div>
+<div class="field">
+  <label>Telefon raqam</label>
+  <div style="display:flex; gap:8px;">
+    <span id="p-kod" style="background:var(--night-2); border:1px solid var(--line); border-radius:12px; padding:14px 12px; color:var(--gold); font-weight:600; white-space:nowrap;">+</span>
+    <input type="text" id="p-nomer" placeholder="90 123 45 67" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)">
   </div>
-  <div class="field">
-    <label>Davlat</label>
-    <input type="text" id="p-davlat" placeholder="O'zbekiston">
-  </div>
+</div>
 
   <button class="btn-primary" onclick="profilniSaqla()">Saqlash</button>
   <button class="btn-primary" style="margin-top:12px; background:#E24B4A; color:#fff;" onclick="chiqish()">Hisobdan chiqish</button>
@@ -586,6 +602,189 @@
     {arabcha:"مَطْعَم", translit:"mat'am", uzbekcha:"restoran"}
   ];
 
+  const davlatlar = [
+    {nom: "AQSH", kod: "+1"},
+    {nom: "Afg'oniston", kod: "+93"},
+    {nom: "Albaniya", kod: "+355"},
+    {nom: "Andorra", kod: "+376"},
+    {nom: "Angola", kod: "+244"},
+    {nom: "Argentina", kod: "+54"},
+    {nom: "Armaniston", kod: "+374"},
+    {nom: "Avstraliya", kod: "+61"},
+    {nom: "Avstriya", kod: "+43"},
+    {nom: "Bahrayn", kod: "+973"},
+    {nom: "Bangladesh", kod: "+880"},
+    {nom: "Belarus", kod: "+375"},
+    {nom: "Belgiya", kod: "+32"},
+    {nom: "Belize", kod: "+501"},
+    {nom: "Benin", kod: "+229"},
+    {nom: "Birlashgan Arab Amirliklari", kod: "+971"},
+    {nom: "Bolgariya", kod: "+359"},
+    {nom: "Boliviya", kod: "+591"},
+    {nom: "Bosniya va Gertsegovina", kod: "+387"},
+    {nom: "Botswana", kod: "+267"},
+    {nom: "Braziliya", kod: "+55"},
+    {nom: "Bruney", kod: "+673"},
+    {nom: "Burkina-Faso", kod: "+226"},
+    {nom: "Burundi", kod: "+257"},
+    {nom: "Butan", kod: "+975"},
+    {nom: "Buyuk Britaniya", kod: "+44"},
+    {nom: "Chad", kod: "+235"},
+    {nom: "Chernogoriya", kod: "+382"},
+    {nom: "Chexiya", kod: "+420"},
+    {nom: "Chili", kod: "+56"},
+    {nom: "Daniya", kod: "+45"},
+    {nom: "Djibuti", kod: "+253"},
+    {nom: "Dominika", kod: "+1767"},
+    {nom: "Dominikan Respublikasi", kod: "+1809"},
+    {nom: "Efiopiya", kod: "+251"},
+    {nom: "Ekvador", kod: "+593"},
+    {nom: "Ekvatorial Gvineya", kod: "+240"},
+    {nom: "Eritreya", kod: "+291"},
+    {nom: "Eron", kod: "+98"},
+    {nom: "Estoniya", kod: "+372"},
+    {nom: "Fiji", kod: "+679"},
+    {nom: "Filippin", kod: "+63"},
+    {nom: "Finlyandiya", kod: "+358"},
+    {nom: "Fransiya", kod: "+33"},
+    {nom: "Gabon", kod: "+241"},
+    {nom: "Gaiti", kod: "+509"},
+    {nom: "Gambiya", kod: "+220"},
+    {nom: "Gana", kod: "+233"},
+    {nom: "Gayana", kod: "+592"},
+    {nom: "Germaniya", kod: "+49"},
+    {nom: "Gonduras", kod: "+504"},
+    {nom: "Grenlandiya", kod: "+299"},
+    {nom: "Gretsiya", kod: "+30"},
+    {nom: "Gruziya", kod: "+995"},
+    {nom: "Gvatemala", kod: "+502"},
+    {nom: "Gvineya", kod: "+224"},
+    {nom: "Hindiston", kod: "+91"},
+    {nom: "Indoneziya", kod: "+62"},
+    {nom: "Iordaniya", kod: "+962"},
+    {nom: "Irlandiya", kod: "+353"},
+    {nom: "Iroq", kod: "+964"},
+    {nom: "Islandiya", kod: "+354"},
+    {nom: "Ispaniya", kod: "+34"},
+    {nom: "Isroil", kod: "+972"},
+    {nom: "Italiya", kod: "+39"},
+    {nom: "Janubiy Afrika", kod: "+27"},
+    {nom: "Janubiy Koreya", kod: "+82"},
+    {nom: "Jazoir", kod: "+213"},
+    {nom: "Kambodja", kod: "+855"},
+    {nom: "Kamerun", kod: "+237"},
+    {nom: "Kanada", kod: "+1"},
+    {nom: "Keniya", kod: "+254"},
+    {nom: "Kipr", kod: "+357"},
+    {nom: "Kiribati", kod: "+686"},
+    {nom: "Kolumbiya", kod: "+57"},
+    {nom: "Komor orollari", kod: "+269"},
+    {nom: "Kongo", kod: "+242"},
+    {nom: "Kosta-Rika", kod: "+506"},
+    {nom: "Kuba", kod: "+53"},
+    {nom: "Laos", kod: "+856"},
+    {nom: "Latviya", kod: "+371"},
+    {nom: "Lesoto", kod: "+266"},
+    {nom: "Liberiya", kod: "+231"},
+    {nom: "Litva", kod: "+370"},
+    {nom: "Livan", kod: "+961"},
+    {nom: "Liviya", kod: "+218"},
+    {nom: "Lixtenshteyn", kod: "+423"},
+    {nom: "Lyuksemburg", kod: "+352"},
+    {nom: "Madagaskar", kod: "+261"},
+    {nom: "Malavi", kod: "+265"},
+    {nom: "Malayziya", kod: "+60"},
+    {nom: "Maldiv orollari", kod: "+960"},
+    {nom: "Mali", kod: "+223"},
+    {nom: "Malta", kod: "+356"},
+    {nom: "Marokash", kod: "+212"},
+    {nom: "Marshall orollari", kod: "+692"},
+    {nom: "Mavrikiy", kod: "+230"},
+    {nom: "Mavritaniya", kod: "+222"},
+    {nom: "Meksika", kod: "+52"},
+    {nom: "Mikroneziya", kod: "+691"},
+    {nom: "Misr", kod: "+20"},
+    {nom: "Moldova", kod: "+373"},
+    {nom: "Monako", kod: "+377"},
+    {nom: "Mongoliya", kod: "+976"},
+    {nom: "Mozambik", kod: "+258"},
+    {nom: "Myanma", kod: "+95"},
+    {nom: "Namibiya", kod: "+264"},
+    {nom: "Nauru", kod: "+674"},
+    {nom: "Nepal", kod: "+977"},
+    {nom: "Niderlandiya", kod: "+31"},
+    {nom: "Niger", kod: "+227"},
+    {nom: "Nigeriya", kod: "+234"},
+    {nom: "Nikaragua", kod: "+505"},
+    {nom: "Norvegiya", kod: "+47"},
+    {nom: "Ozarbayjon", kod: "+994"},
+    {nom: "O'zbekiston", kod: "+998"},
+    {nom: "Palau", kod: "+680"},
+    {nom: "Panama", kod: "+507"},
+    {nom: "Papua-Yangi Gvineya", kod: "+675"},
+    {nom: "Paragvay", kod: "+595"},
+    {nom: "Peru", kod: "+51"},
+    {nom: "Pokiston", kod: "+92"},
+    {nom: "Polsha", kod: "+48"},
+    {nom: "Portugaliya", kod: "+351"},
+    {nom: "Qatar", kod: "+974"},
+    {nom: "Qirg'iziston", kod: "+996"},
+    {nom: "Qozog'iston", kod: "+7"},
+    {nom: "Quvayt", kod: "+965"},
+    {nom: "Rossiya", kod: "+7"},
+    {nom: "Ruanda", kod: "+250"},
+    {nom: "Ruminiya", kod: "+40"},
+    {nom: "Salvador", kod: "+503"},
+    {nom: "Samoa", kod: "+685"},
+    {nom: "San-Marino", kod: "+378"},
+    {nom: "Saudiya Arabistoni", kod: "+966"},
+    {nom: "Senegal", kod: "+221"},
+    {nom: "Sent-Lyusiya", kod: "+1758"},
+    {nom: "Serbiya", kod: "+381"},
+    {nom: "Serra-Leone", kod: "+232"},
+    {nom: "Seyshel orollari", kod: "+248"},
+    {nom: "Shimoliy Koreya", kod: "+850"},
+    {nom: "Shimoliy Makedoniya", kod: "+389"},
+    {nom: "Shri-Lanka", kod: "+94"},
+    {nom: "Shvetsiya", kod: "+46"},
+    {nom: "Shveytsariya", kod: "+41"},
+    {nom: "Singapur", kod: "+65"},
+    {nom: "Slovakiya", kod: "+421"},
+    {nom: "Sloveniya", kod: "+386"},
+    {nom: "Solomon orollari", kod: "+677"},
+    {nom: "Somali", kod: "+252"},
+    {nom: "Sudan", kod: "+249"},
+    {nom: "Surinam", kod: "+597"},
+    {nom: "Suriya", kod: "+963"},
+    {nom: "Tailand", kod: "+66"},
+    {nom: "Tanzaniya", kod: "+255"},
+    {nom: "Tayvan", kod: "+886"},
+    {nom: "Togo", kod: "+228"},
+    {nom: "Tojikiston", kod: "+992"},
+    {nom: "Tonga", kod: "+676"},
+    {nom: "Trinidad va Tobago", kod: "+1868"},
+    {nom: "Tunis", kod: "+216"},
+    {nom: "Turkiya", kod: "+90"},
+    {nom: "Turkmaniston", kod: "+993"},
+    {nom: "Uganda", kod: "+256"},
+    {nom: "Ukraina", kod: "+380"},
+    {nom: "Ummon", kod: "+968"},
+    {nom: "Urugvay", kod: "+598"},
+    {nom: "Vanuatu", kod: "+678"},
+    {nom: "Vatikan", kod: "+379"},
+    {nom: "Venesuela", kod: "+58"},
+    {nom: "Vengriya", kod: "+36"},
+    {nom: "Vyetnam", kod: "+84"},
+    {nom: "Xitoy", kod: "+86"},
+    {nom: "Xorvatiya", kod: "+385"},
+    {nom: "Yaman", kod: "+967"},
+    {nom: "Yamayka", kod: "+1876"},
+    {nom: "Yangi Zelandiya", kod: "+64"},
+    {nom: "Yaponiya", kod: "+81"},
+    {nom: "Zambiya", kod: "+260"},
+    {nom: "Zimbabve", kod: "+263"},
+];
+
   let currentLang = 'uz';
 
   function tekshirVaBoshla(){
@@ -621,8 +820,18 @@
     }
 
     
-const davlat = document.getElementById('kirish-davlat').value.trim() || "O'zbekiston";
-const nomer = document.getElementById('kirish-nomer').value.trim() || '—';
+const davlatInput = document.getElementById('kirish-davlat').value.trim();
+const davlatMos = davlatlar.find(d => d.nom === davlatInput);
+
+if(!davlatMos){
+    xatoText.textContent = "Iltimos, ro'yxatdan davlatni to'g'ri tanlang";
+    xatoText.style.display = 'block';
+    return;
+}
+const davlat = davlatMos.nom;
+const kod = document.getElementById('kirish-kod').textContent;
+const nomerRaqam = document.getElementById('kirish-nomer').value.trim();
+const nomer = nomerRaqam ? (kod + ' ' + nomerRaqam) : '—';
 const ism = document.getElementById('kirish-ism').value.trim();
 const familiya = document.getElementById('kirish-familiya').value.trim();
 
@@ -658,8 +867,16 @@ function chiqish(){
 
 function profilniSaqla(){
     const email = document.getElementById('p-email').value.trim();
-    const nomer = document.getElementById('p-nomer').value.trim();
-    const davlat = document.getElementById('p-davlat').value.trim();
+    const kod = document.getElementById('p-kod').textContent;
+const nomerRaqam = document.getElementById('p-nomer').value.trim();
+const nomer = nomerRaqam ? (kod + ' ' + nomerRaqam) : '';
+    const davlatInput = document.getElementById('p-davlat').value.trim();
+const davlatMos = davlatlar.find(d => d.nom === davlatInput);
+if(!davlatMos){
+    alert("Iltimos, ro'yxatdan davlatni to'g'ri tanlang");
+    return;
+}
+const davlat = davlatMos.nom;
 
     localStorage.setItem('foydalanuvchi_email', email);
     localStorage.setItem('foydalanuvchi_nomer', nomer);
@@ -682,6 +899,57 @@ function profilniYukla(){
     document.getElementById('p-email').value = localStorage.getItem('foydalanuvchi_email') || '';
     document.getElementById('p-nomer').value = localStorage.getItem('foydalanuvchi_nomer') || '';
     document.getElementById('p-davlat').value = localStorage.getItem('foydalanuvchi_davlat') || '';
+    avatarniKorsat();
+}
+
+function davlatRoyxatiniToldir(datalistId){
+    const dl = document.getElementById(datalistId);
+    dl.innerHTML = davlatlar.map(d => '<option value="' + d.nom + '">').join('');
+}
+
+function kodniYangila(prefiks){
+    const input = document.getElementById(prefiks + '-davlat');
+    const tanlangan = davlatlar.find(d => d.nom === input.value);
+    document.getElementById(prefiks + '-kod').textContent = tanlangan ? tanlangan.kod : '+';
+}
+
+function rasmYukla(event){
+    const fayl = event.target.files[0];
+    if(!fayl) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e){
+        const img = new Image();
+        img.onload = function(){
+            const canvas = document.createElement('canvas');
+            const olcham = 200;
+            canvas.width = olcham;
+            canvas.height = olcham;
+            const ctx = canvas.getContext('2d');
+
+            const minTomon = Math.min(img.width, img.height);
+            const sx = (img.width - minTomon) / 2;
+            const sy = (img.height - minTomon) / 2;
+            ctx.drawImage(img, sx, sy, minTomon, minTomon, 0, 0, olcham, olcham);
+
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+            localStorage.setItem('foydalanuvchi_rasm', dataUrl);
+            avatarniKorsat();
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(fayl);
+}
+
+function avatarniKorsat(){
+    const rasm = localStorage.getItem('foydalanuvchi_rasm');
+    const avatarDiv = document.getElementById('avatar-initials');
+    if(rasm){
+        avatarDiv.style.backgroundImage = 'url(' + rasm + ')';
+        avatarDiv.textContent = '';
+    } else {
+        avatarDiv.style.backgroundImage = 'none';
+    }
 }
 
   function goScreen(id){
@@ -699,6 +967,7 @@ function profilniYukla(){
       const initials = (ism[0] || 'A') + (familiya[0] || 'A');
       document.getElementById('avatar-initials').textContent = initials.toUpperCase();
       renderChips();
+      tarixniKorsat();
     }
 }
 
@@ -719,7 +988,7 @@ function profilniYukla(){
     document.getElementById('qidiruv').placeholder = lang === 'uz' ? "O'zbekcha so'z kiriting..." : "Arabcha so'z kiriting...";
   }
 
-  async function qidir(){
+ async function qidir(){
     const soz = document.getElementById('qidiruv').value.trim();
     const card = document.getElementById('natija-card');
     if(!soz){ return; }
@@ -733,6 +1002,7 @@ function profilniYukla(){
 
     if(topilgan){
         card.innerHTML = '<div class="result-arabic">' + topilgan.arabcha + '</div><div class="result-translit">' + topilgan.translit + ' &middot; ' + topilgan.uzbekcha + '</div>';
+        tarixgaQoshish(topilgan.arabcha, topilgan.translit, topilgan.uzbekcha);
         return;
     }
 
@@ -748,6 +1018,7 @@ function profilniYukla(){
             const arabchaMatn = currentLang === 'uz' ? tarjima : soz;
             const uzbekchaMatn = currentLang === 'uz' ? soz : tarjima;
             card.innerHTML = '<div class="result-arabic">' + arabchaMatn + '</div><div class="result-translit">internetdan topildi &middot; ' + uzbekchaMatn + '</div>';
+            tarixgaQoshish(arabchaMatn, 'internetdan', uzbekchaMatn);
         } else {
             card.innerHTML = '<span class="result-empty">Bu so\'z topilmadi</span>';
         }
@@ -755,6 +1026,7 @@ function profilniYukla(){
         card.innerHTML = '<span class="result-empty">Internetga ulanishda xatolik</span>';
     }
 }
+
   function renderChips(){
     const wrap = document.getElementById('chip-list');
     const sample = sozlar.slice(3, 11);
@@ -762,6 +1034,45 @@ function profilniYukla(){
       '<span class="word-chip" onclick="showChip(\'' + s.uzbekcha + '\')">' + s.uzbekcha + '</span>'
     ).join('');
   }
+
+  function tarixgaQoshish(arabcha, translit, uzbekcha){
+    let tarix = JSON.parse(localStorage.getItem('qidiruv_tarixi') || '[]');
+    tarix = tarix.filter(t => t.uzbekcha !== uzbekcha);
+    tarix.unshift({arabcha, translit, uzbekcha});
+    if(tarix.length > 30){
+        tarix = tarix.slice(0, 30);
+    }
+    localStorage.setItem('qidiruv_tarixi', JSON.stringify(tarix));
+    tarixniKorsat();
+}
+
+function tarixniKorsat(){
+    const tarix = JSON.parse(localStorage.getItem('qidiruv_tarixi') || '[]');
+    const label = document.getElementById('tarix-label');
+    const list = document.getElementById('tarix-list');
+
+    if(tarix.length === 0){
+        label.style.display = 'none';
+        list.innerHTML = '';
+        return;
+    }
+
+    label.style.display = 'block';
+    list.innerHTML = tarix.map(t =>
+        '<span class="word-chip" onclick="tarixdanQidir(\'' + t.uzbekcha.replace(/'/g, "\\'") + '\')">' + t.uzbekcha + '</span>'
+    ).join('');
+}
+
+function tarixdanQidir(uz){
+    setLang('uz');
+    document.getElementById('qidiruv').value = uz;
+    qidir();
+}
+
+function tarixniTozala(){
+    localStorage.removeItem('qidiruv_tarixi');
+    tarixniKorsat();
+}
 
   function showChip(uz){
     setLang('uz');
@@ -774,6 +1085,24 @@ function profilniYukla(){
   }
 
   window.addEventListener('load', function(){
+    window.addEventListener('load', function(){
+    davlatRoyxatiniToldir('davlat-royxati-1');
+    davlatRoyxatiniToldir('davlat-royxati-2');
+    kodniYangila('kirish');
+    kodniYangila('p');
+
+    const saqlanganIsm = localStorage.getItem('foydalanuvchi_ism');
+    if(saqlanganIsm){
+        document.getElementById('p-ism').textContent = saqlanganIsm;
+        document.getElementById('p-familiya').textContent = localStorage.getItem('foydalanuvchi_familiya') || '—';
+        const initials = (saqlanganIsm[0] || 'A') + ((localStorage.getItem('foydalanuvchi_familiya') || 'A')[0]);
+        document.getElementById('avatar-initials').textContent = initials.toUpperCase();
+        goScreen('screen-app');
+        setTab('qidiruv');
+        renderChips();
+        tarixniKorsat();
+    }
+});
     const saqlanganIsm = localStorage.getItem('foydalanuvchi_ism');
     if(saqlanganIsm){
         document.getElementById('p-ism').textContent = saqlanganIsm;
