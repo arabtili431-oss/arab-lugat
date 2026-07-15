@@ -337,6 +337,30 @@
   .nav-item.active{ color:var(--gold); }
   .nav-item svg{ width:20px; height:20px; }
 </style>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCGbaAdTVgbTvSScDsKom3aGMW7l1HVsxo",
+    authDomain: "arab-lugat.firebaseapp.com",
+    projectId: "arab-lugat",
+    storageBucket: "arab-lugat.firebasestorage.app",
+    messagingSenderId: "557625432102",
+    appId: "1:557625432102:web:38ec545a051f392712eee7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  window.saveToFirebase = async function(data){
+    try {
+      await addDoc(collection(db, "foydalanuvchilar"), data);
+    } catch (e) {
+      console.error("Firebase xato:", e);
+    }
+  }
+</script>
 </head>
 <body>
 
@@ -367,20 +391,44 @@
       <h1 class="title">Tug'ilgan sanangiz</h1>
       <p class="subtitle">Bu ma'lumot sizga mos darslarni tavsiya qilishga yordam beradi.</p>
       <div class="row-3">
+  <div class="field">
+    <label>Yil</label>
+    <input type="number" id="kirish-yil" placeholder="2005" min="1900" max="2100" oninput="if(this.value.length>4) this.value=this.value.slice(0,4)">
+  </div>
+  <div class="field">
+    <label>Oy</label>
+    <select id="kirish-oy">
+      <option value="">Tanlang</option>
+      <option value="1">Yanvar</option>
+      <option value="2">Fevral</option>
+      <option value="3">Mart</option>
+      <option value="4">Aprel</option>
+      <option value="5">May</option>
+      <option value="6">Iyun</option>
+      <option value="7">Iyul</option>
+      <option value="8">Avgust</option>
+      <option value="9">Sentabr</option>
+      <option value="10">Oktabr</option>
+      <option value="11">Noyabr</option>
+      <option value="12">Dekabr</option>
+    </select>
+  </div>
+  <div class="field">
+    <label>Kun</label>
+    <input type="number" id="kirish-kun" placeholder="14" min="1" max="31" oninput="if(this.value.length>2) this.value=this.value.slice(0,2)">
+  </div>
+</div>
+
         <div class="field">
-          <label>Yil</label>
-          <input type="text" placeholder="2005">
+          <label>Davlat</label>
+          <input type="text" id="kirish-davlat" placeholder="O'zbekiston">
         </div>
         <div class="field">
-          <label>Oy</label>
-          <input type="text" placeholder="07">
+          <label>Telefon raqam</label>
+          <input type="text" id="kirish-nomer" placeholder="+998 90 123 45 67">
         </div>
-        <div class="field">
-          <label>Kun</label>
-          <input type="text" placeholder="14">
-        </div>
-      </div>
-      <button class="btn-primary" onclick="goScreen('screen-app'); setTab('qidiruv')">Boshlash</button>
+<p id="yosh-xato" style="color:#E24B4A; font-size:12px; margin-bottom:14px; display:none;"></p>
+<button class="btn-primary" onclick="tekshirVaBoshla()">Boshlash</button>
       <div class="dots"><div class="dot"></div><div class="dot on"></div></div>
     </div>
   </div>
@@ -420,33 +468,45 @@
     <div class="screen-body" id="tab-yordam" style="display:none;">
       <h1 class="title" style="font-size:24px;">Yordam</h1>
       <p class="subtitle" style="margin-bottom:20px;">Savol yoki taklifingiz bo'lsa, biz bilan bog'laning.</p>
-      <a class="help-item" href="#">
-        <div class="help-icon">&#9992;</div>
-        <div><p>Telegram</p><span>@ali_arabiy</span></div>
-      </a>
-      <a class="help-item" href="#">
-        <div class="help-icon">&#9654;</div>
-        <div><p>YouTube</p><span>@Ali_Arabiy1</span></div>
-      </a>
-      <a class="help-item" href="#">
-        <div class="help-icon">&#9679;</div>
-        <div><p>Instagram</p><span>@ali_arabiy</span></div>
-      </a>
-      <a class="help-item" href="#">
-        <div class="help-icon">&#9993;</div>
-        <div><p>Admin bilan bog'lanish</p><span>Savollaringizga javob beramiz</span></div>
-      </a>
+      <a class="help-item" href="https://t.me/arabtilini_organamiz0" target="_blank">
+  <div class="help-icon">&#9992;</div>
+  <div><p>Telegram</p><span>Kanalimizga qo'shiling</span></div>
+</a>
+<a class="help-item" href="https://www.youtube.com/channel/UCfI-y0CRMiYUk5lT7pD0fEQ" target="_blank">
+  <div class="help-icon">&#9654;</div>
+  <div><p>YouTube</p><span>Video darslarni tomosha qiling</span></div>
+</a>
+<a class="help-item" href="https://www.instagram.com/a1iy_arobiy" target="_blank">
+  <div class="help-icon">&#9679;</div>
+  <div><p>Instagram</p><span>Bizni kuzatib boring</span></div>
+</a>
+<a class="help-item" href="https://t.me/arabtilini_organamiz0" target="_blank">
+  <div class="help-icon">&#9993;</div>
+  <div><p>Admin bilan bog'lanish</p><span>Savollaringizga javob beramiz</span></div>
+</a>
     </div>
 
-    <div class="screen-body" id="tab-profil" style="display:none;">
-      <div class="avatar" id="avatar-initials">AA</div>
-      <div class="profile-field"><span>Ism</span><span id="p-ism">—</span></div>
-      <div class="profile-field"><span>Familiya</span><span id="p-familiya">—</span></div>
-      <div class="profile-field"><span>Email</span><span>—</span></div>
-      <div class="profile-field"><span>Nomer</span><span>—</span></div>
-      <div class="profile-field"><span>Davlat</span><span>O'zbekiston</span></div>
-      <div class="profile-field"><span>Til</span><span>O'zbekcha</span></div>
-    </div>
+   <div class="screen-body" id="tab-profil" style="display:none;">
+  <div class="avatar" id="avatar-initials">AA</div>
+  <div class="profile-field"><span>Ism</span><span id="p-ism">—</span></div>
+  <div class="profile-field"><span>Familiya</span><span id="p-familiya">—</span></div>
+
+  <div class="field" style="margin-top:20px;">
+    <label>Email</label>
+    <input type="text" id="p-email" placeholder="email@misol.com">
+  </div>
+  <div class="field">
+    <label>Telefon raqam</label>
+    <input type="text" id="p-nomer" placeholder="+998 90 123 45 67">
+  </div>
+  <div class="field">
+    <label>Davlat</label>
+    <input type="text" id="p-davlat" placeholder="O'zbekiston">
+  </div>
+
+  <button class="btn-primary" onclick="profilniSaqla()">Saqlash</button>
+  <button class="btn-primary" style="margin-top:12px; background:#E24B4A; color:#fff;" onclick="chiqish()">Hisobdan chiqish</button>
+</div>
 
     <div class="navbar">
       <button class="nav-item active" id="navbtn-qidiruv" onclick="setTab('qidiruv')">
@@ -528,26 +588,129 @@
 
   let currentLang = 'uz';
 
+  function tekshirVaBoshla(){
+    const yil = parseInt(document.getElementById('kirish-yil').value);
+    const oy = document.getElementById('kirish-oy').value;
+    const kun = parseInt(document.getElementById('kirish-kun').value);
+    const xatoText = document.getElementById('yosh-xato');
+
+    if(!yil || !oy || !kun){
+        xatoText.textContent = "Iltimos, yil, oy va kunni to'liq kiriting";
+        xatoText.style.display = 'block';
+        return;
+    }
+
+    if(kun < 1 || kun > 31){
+        xatoText.textContent = "Kun 1 dan 31 gacha bo'lishi kerak";
+        xatoText.style.display = 'block';
+        return;
+    }
+
+    const bugun = new Date();
+    const tugilganSana = new Date(yil, oy - 1, kun);
+    let yosh = bugun.getFullYear() - tugilganSana.getFullYear();
+    const oyFarqi = bugun.getMonth() - tugilganSana.getMonth();
+    if(oyFarqi < 0 || (oyFarqi === 0 && bugun.getDate() < tugilganSana.getDate())){
+        yosh--;
+    }
+
+    if(yosh < 6){
+        xatoText.textContent = "Afsuski, ilovadan 6 yoshdan katta foydalanuvchilar foydalanishi mumkin";
+        xatoText.style.display = 'block';
+        return;
+    }
+
+    
+const davlat = document.getElementById('kirish-davlat').value.trim() || "O'zbekiston";
+const nomer = document.getElementById('kirish-nomer').value.trim() || '—';
+const ism = document.getElementById('kirish-ism').value.trim();
+const familiya = document.getElementById('kirish-familiya').value.trim();
+
+localStorage.setItem('foydalanuvchi_davlat', davlat);
+localStorage.setItem('foydalanuvchi_nomer', nomer);
+
+saveToFirebase({
+    ism: ism,
+    familiya: familiya,
+    yil: yil,
+    oy: oy,
+    kun: kun,
+    davlat: davlat,
+    nomer: nomer,
+    sana: new Date().toISOString()
+});
+
+xatoText.style.display = 'none';
+goScreen('screen-app');
+setTab('qidiruv');
+}
+
+function chiqish(){
+    localStorage.removeItem('foydalanuvchi_ism');
+    localStorage.removeItem('foydalanuvchi_familiya');
+    document.getElementById('kirish-ism').value = '';
+    document.getElementById('kirish-familiya').value = '';
+    document.getElementById('kirish-yil').value = '';
+    document.getElementById('kirish-oy').value = '';
+    document.getElementById('kirish-kun').value = '';
+    goScreen('screen-kirish1');
+}
+
+function profilniSaqla(){
+    const email = document.getElementById('p-email').value.trim();
+    const nomer = document.getElementById('p-nomer').value.trim();
+    const davlat = document.getElementById('p-davlat').value.trim();
+
+    localStorage.setItem('foydalanuvchi_email', email);
+    localStorage.setItem('foydalanuvchi_nomer', nomer);
+    localStorage.setItem('foydalanuvchi_davlat', davlat);
+
+    saveToFirebase({
+        ism: localStorage.getItem('foydalanuvchi_ism') || '',
+        familiya: localStorage.getItem('foydalanuvchi_familiya') || '',
+        email: email,
+        nomer: nomer,
+        davlat: davlat,
+        turi: 'profil_yangilash',
+        sana: new Date().toISOString()
+    });
+
+    alert('Ma\'lumotlar saqlandi');
+}
+
+function profilniYukla(){
+    document.getElementById('p-email').value = localStorage.getItem('foydalanuvchi_email') || '';
+    document.getElementById('p-nomer').value = localStorage.getItem('foydalanuvchi_nomer') || '';
+    document.getElementById('p-davlat').value = localStorage.getItem('foydalanuvchi_davlat') || '';
+}
+
   function goScreen(id){
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     if(id === 'screen-app'){
       const ism = document.getElementById('kirish-ism').value.trim() || 'Foydalanuvchi';
       const familiya = document.getElementById('kirish-familiya').value.trim();
+
+      localStorage.setItem('foydalanuvchi_ism', ism);
+      localStorage.setItem('foydalanuvchi_familiya', familiya);
+
       document.getElementById('p-ism').textContent = ism;
       document.getElementById('p-familiya').textContent = familiya || '—';
       const initials = (ism[0] || 'A') + (familiya[0] || 'A');
       document.getElementById('avatar-initials').textContent = initials.toUpperCase();
       renderChips();
     }
-  }
+}
 
-  function setTab(tab){
+ function setTab(tab){
     ['qidiruv','dastur','yordam','profil'].forEach(t => {
       document.getElementById('tab-' + t).style.display = (t === tab) ? 'block' : 'none';
       document.getElementById('navbtn-' + t).classList.toggle('active', t === tab);
     });
-  }
+    if(tab === 'profil'){
+        profilniYukla();
+    }
+}
 
   function setLang(lang){
     currentLang = lang;
@@ -556,23 +719,42 @@
     document.getElementById('qidiruv').placeholder = lang === 'uz' ? "O'zbekcha so'z kiriting..." : "Arabcha so'z kiriting...";
   }
 
-  function qidir(){
+  async function qidir(){
     const soz = document.getElementById('qidiruv').value.trim();
     const card = document.getElementById('natija-card');
     if(!soz){ return; }
+
     let topilgan;
     if(currentLang === 'uz'){
-      topilgan = sozlar.find(s => s.uzbekcha.toLowerCase() === soz.toLowerCase());
+        topilgan = sozlar.find(s => s.uzbekcha.toLowerCase() === soz.toLowerCase());
     } else {
-      topilgan = sozlar.find(s => s.arabcha === soz || s.translit.toLowerCase() === soz.toLowerCase());
+        topilgan = sozlar.find(s => s.arabcha === soz || s.translit.toLowerCase() === soz.toLowerCase());
     }
-    if(topilgan){
-      card.innerHTML = '<div class="result-arabic">' + topilgan.arabcha + '</div><div class="result-translit">' + topilgan.translit + ' &middot; ' + topilgan.uzbekcha + '</div>';
-    } else {
-      card.innerHTML = '<span class="result-empty">Bu so\'z lug\'atda topilmadi</span>';
-    }
-  }
 
+    if(topilgan){
+        card.innerHTML = '<div class="result-arabic">' + topilgan.arabcha + '</div><div class="result-translit">' + topilgan.translit + ' &middot; ' + topilgan.uzbekcha + '</div>';
+        return;
+    }
+
+    card.innerHTML = '<span class="result-empty">Qidirilmoqda...</span>';
+
+    try {
+        const langpair = currentLang === 'uz' ? 'uz|ar' : 'ar|uz';
+        const response = await fetch('https://api.mymemory.translated.net/get?q=' + encodeURIComponent(soz) + '&langpair=' + langpair);
+        const data = await response.json();
+        const tarjima = data.responseData.translatedText;
+
+        if (tarjima && tarjima.toLowerCase() !== soz.toLowerCase()) {
+            const arabchaMatn = currentLang === 'uz' ? tarjima : soz;
+            const uzbekchaMatn = currentLang === 'uz' ? soz : tarjima;
+            card.innerHTML = '<div class="result-arabic">' + arabchaMatn + '</div><div class="result-translit">internetdan topildi &middot; ' + uzbekchaMatn + '</div>';
+        } else {
+            card.innerHTML = '<span class="result-empty">Bu so\'z topilmadi</span>';
+        }
+    } catch (error) {
+        card.innerHTML = '<span class="result-empty">Internetga ulanishda xatolik</span>';
+    }
+}
   function renderChips(){
     const wrap = document.getElementById('chip-list');
     const sample = sozlar.slice(3, 11);
@@ -590,6 +772,20 @@
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(()=>{});
   }
+
+  window.addEventListener('load', function(){
+    const saqlanganIsm = localStorage.getItem('foydalanuvchi_ism');
+    if(saqlanganIsm){
+        document.getElementById('p-ism').textContent = saqlanganIsm;
+        document.getElementById('p-familiya').textContent = localStorage.getItem('foydalanuvchi_familiya') || '—';
+        const initials = (saqlanganIsm[0] || 'A') + ((localStorage.getItem('foydalanuvchi_familiya') || 'A')[0]);
+        document.getElementById('avatar-initials').textContent = initials.toUpperCase();
+        goScreen('screen-app');
+        setTab('qidiruv');
+        renderChips();
+    }
+});
+
 </script>
 
 </body>
