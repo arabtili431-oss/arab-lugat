@@ -533,7 +533,10 @@ window.googleChiqish = async function(){
 </div>
 <div id="tarix-list"></div>
 
-<div class="word-list-label">Tavsiya etilgan so'zlar</div>
+<div class="word-list-label">Kategoriyalar</div>
+<div id="toifa-list" style="margin-bottom:20px;"></div>
+
+<div class="word-list-label">So'zlar</div>
 <div id="chip-list"></div>
     </div>
 
@@ -665,60 +668,44 @@ window.googleChiqish = async function(){
 
 <script>
   const sozlar = [
-    {arabcha:"كِتَاب", translit:"kitab", uzbekcha:"kitob"},
-    {arabcha:"بَيْت", translit:"bayt", uzbekcha:"uy"},
-    {arabcha:"مَاء", translit:"ma'", uzbekcha:"suv"},
-    {arabcha:"سَلَام", translit:"salam", uzbekcha:"salom"},
-    {arabcha:"شُكْرًا", translit:"shukran", uzbekcha:"rahmat"},
-    {arabcha:"عَفْوًا", translit:"afwan", uzbekcha:"arzimaydi"},
-    {arabcha:"نَعَم", translit:"na'am", uzbekcha:"ha"},
-    {arabcha:"لَا", translit:"la", uzbekcha:"yo'q"},
-    {arabcha:"أُمّ", translit:"umm", uzbekcha:"ona"},
-    {arabcha:"أَب", translit:"ab", uzbekcha:"ota"},
-    {arabcha:"أَخ", translit:"akh", uzbekcha:"aka/uka"},
-    {arabcha:"أُخْت", translit:"ukht", uzbekcha:"opa/singil"},
-    {arabcha:"اِبْن", translit:"ibn", uzbekcha:"o'g'il"},
-    {arabcha:"اِبْنَة", translit:"ibnah", uzbekcha:"qiz"},
-    {arabcha:"جَدّ", translit:"jadd", uzbekcha:"bobo"},
-    {arabcha:"جَدَّة", translit:"jaddah", uzbekcha:"buvi"},
-    {arabcha:"قَلَم", translit:"qalam", uzbekcha:"qalam"},
-    {arabcha:"بَاب", translit:"bab", uzbekcha:"eshik"},
-    {arabcha:"نَافِذَة", translit:"nafidhah", uzbekcha:"deraza"},
-    {arabcha:"طَاوِلَة", translit:"tawilah", uzbekcha:"stol"},
-    {arabcha:"كُرْسِيّ", translit:"kursiyy", uzbekcha:"stul"},
-    {arabcha:"مِفْتَاح", translit:"miftah", uzbekcha:"kalit"},
-    {arabcha:"خُبْز", translit:"khubz", uzbekcha:"non"},
-    {arabcha:"لَحْم", translit:"lahm", uzbekcha:"go'sht"},
-    {arabcha:"تُفَّاح", translit:"tuffah", uzbekcha:"olma"},
-    {arabcha:"حَلِيب", translit:"halib", uzbekcha:"sut"},
-    {arabcha:"شَاي", translit:"shay", uzbekcha:"choy"},
-    {arabcha:"أَحْمَر", translit:"ahmar", uzbekcha:"qizil"},
-    {arabcha:"أَزْرَق", translit:"azraq", uzbekcha:"ko'k"},
-    {arabcha:"أَخْضَر", translit:"akhdar", uzbekcha:"yashil"},
-    {arabcha:"أَصْفَر", translit:"asfar", uzbekcha:"sariq"},
-    {arabcha:"أَبْيَض", translit:"abyad", uzbekcha:"oq"},
-    {arabcha:"أَسْوَد", translit:"aswad", uzbekcha:"qora"},
-    {arabcha:"وَاحِد", translit:"wahid", uzbekcha:"bir"},
-    {arabcha:"اِثْنَان", translit:"ithnan", uzbekcha:"ikki"},
-    {arabcha:"ثَلَاثَة", translit:"thalathah", uzbekcha:"uch"},
-    {arabcha:"أَرْبَعَة", translit:"arba'ah", uzbekcha:"to'rt"},
-    {arabcha:"خَمْسَة", translit:"khamsah", uzbekcha:"besh"},
-    {arabcha:"يَوْم", translit:"yawm", uzbekcha:"kun"},
-    {arabcha:"لَيْل", translit:"layl", uzbekcha:"tun"},
-    {arabcha:"صَبَاح", translit:"sabah", uzbekcha:"ertalab"},
-    {arabcha:"مَسَاء", translit:"masa'", uzbekcha:"kechqurun"},
-    {arabcha:"أُسْبُوع", translit:"usbu'", uzbekcha:"hafta"},
-    {arabcha:"أَكَلَ", translit:"akala", uzbekcha:"yedi"},
-    {arabcha:"شَرِبَ", translit:"shariba", uzbekcha:"ichdi"},
-    {arabcha:"ذَهَبَ", translit:"dhahaba", uzbekcha:"bordi"},
-    {arabcha:"جَلَسَ", translit:"jalasa", uzbekcha:"o'tirdi"},
-    {arabcha:"قَرَأَ", translit:"qara'a", uzbekcha:"o'qidi"},
-    {arabcha:"مَدْرَسَة", translit:"madrasah", uzbekcha:"maktab"},
-    {arabcha:"مَسْجِد", translit:"masjid", uzbekcha:"masjid"},
-    {arabcha:"سُوق", translit:"suq", uzbekcha:"bozor"},
-    {arabcha:"مُسْتَشْفَى", translit:"mustashfa", uzbekcha:"kasalxona"},
-    {arabcha:"مَطْعَم", translit:"mat'am", uzbekcha:"restoran"}
-  ];
+    {arabcha:"كِتَاب", translit:"kitab", uzbekcha:"kitob", toifa:"Uy va narsalar"},
+    {arabcha:"بَيْت", translit:"bayt", uzbekcha:"uy", toifa:"Uy va narsalar"},
+    {arabcha:"مَاء", translit:"ma'", uzbekcha:"suv", toifa:"Ovqat va ichimlik"},
+    {arabcha:"سَلَام", translit:"salam", uzbekcha:"salom", toifa:"Salomlashish"},
+    {arabcha:"شُكْرًا", translit:"shukran", uzbekcha:"rahmat", toifa:"Salomlashish"},
+    {arabcha:"عَفْوًا", translit:"afwan", uzbekcha:"arzimaydi", toifa:"Salomlashish"},
+    {arabcha:"نَعَم", translit:"na'am", uzbekcha:"ha", toifa:"Salomlashish"},
+    {arabcha:"لَا", translit:"la", uzbekcha:"yo'q", toifa:"Salomlashish"},
+    {arabcha:"أُمّ", translit:"umm", uzbekcha:"ona", toifa:"Oila"},
+    {arabcha:"أَب", translit:"ab", uzbekcha:"ota", toifa:"Oila"},
+    {arabcha:"أَخ", translit:"akh", uzbekcha:"aka/uka", toifa:"Oila"},
+    {arabcha:"أُخْت", translit:"ukht", uzbekcha:"opa/singil", toifa:"Oila"},
+    {arabcha:"اِبْن", translit:"ibn", uzbekcha:"o'g'il", toifa:"Oila"},
+    {arabcha:"اِبْنَة", translit:"ibnah", uzbekcha:"qiz", toifa:"Oila"},
+    {arabcha:"جَدّ", translit:"jadd", uzbekcha:"bobo", toifa:"Oila"},
+    {arabcha:"جَدَّة", translit:"jaddah", uzbekcha:"buvi", toifa:"Oila"},
+    {arabcha:"قَلَم", translit:"qalam", uzbekcha:"qalam", toifa:"Uy va narsalar"},
+    {arabcha:"بَاب", translit:"bab", uzbekcha:"eshik", toifa:"Uy va narsalar"},
+    {arabcha:"نَافِذَة", translit:"nafidhah", uzbekcha:"deraza", toifa:"Uy va narsalar"},
+    {arabcha:"طَاوِلَة", translit:"tawilah", uzbekcha:"stol", toifa:"Uy va narsalar"},
+    {arabcha:"كُرْسِيّ", translit:"kursiyy", uzbekcha:"stul", toifa:"Uy va narsalar"},
+    {arabcha:"مِفْتَاح", translit:"miftah", uzbekcha:"kalit", toifa:"Uy va narsalar"},
+    {arabcha:"خُبْز", translit:"khubz", uzbekcha:"non", toifa:"Ovqat va ichimlik"},
+    {arabcha:"لَحْم", translit:"lahm", uzbekcha:"go'sht", toifa:"Ovqat va ichimlik"},
+    {arabcha:"تُفَّاح", translit:"tuffah", uzbekcha:"olma", toifa:"Ovqat va ichimlik"},
+    {arabcha:"حَلِيب", translit:"halib", uzbekcha:"sut", toifa:"Ovqat va ichimlik"},
+    {arabcha:"شَاي", translit:"shay", uzbekcha:"choy", toifa:"Ovqat va ichimlik"},
+    {arabcha:"أَحْمَر", translit:"ahmar", uzbekcha:"qizil", toifa:"Ranglar"},
+    {arabcha:"أَزْرَق", translit:"azraq", uzbekcha:"ko'k", toifa:"Ranglar"},
+    {arabcha:"أَخْضَر", translit:"akhdar", uzbekcha:"yashil", toifa:"Ranglar"},
+    {arabcha:"أَصْفَر", translit:"asfar", uzbekcha:"sariq", toifa:"Ranglar"},
+    {arabcha:"أَبْيَض", translit:"abyad", uzbekcha:"oq", toifa:"Ranglar"},
+    {arabcha:"أَسْوَد", translit:"aswad", uzbekcha:"qora", toifa:"Ranglar"},
+    {arabcha:"وَاحِد", translit:"wahid", uzbekcha:"bir", toifa:"Sonlar"},
+    {arabcha:"اِثْنَان", translit:"ithnan", uzbekcha:"ikki", toifa:"Sonlar"},
+    {arabcha:"ثَلَاثَة", translit:"thalathah", uzbekcha:"uch", toifa:"Sonlar"},
+    {arabcha:"أَرْبَعَة", translit:"arba'ah", uzbekcha:"to'rt", toifa:"Sonlar"},
+]
 
   const davlatlar = [
     {nom: "AQSH", kod: "+1"},
@@ -1164,7 +1151,7 @@ function avatarniKorsat(){
         localStorage.setItem('foydalanuvchi_ism', kirishIsm);
         localStorage.setItem('foydalanuvchi_familiya', kirishFamiliya);
     }
-
+    toifalarniKorsat();
     renderChips();
 }
 }
@@ -1230,13 +1217,29 @@ function avatarniKorsat(){
     }
 }
 
-  function renderChips(){
-    const wrap = document.getElementById('chip-list');
-    const sample = sozlar.slice(3, 11);
-    wrap.innerHTML = sample.map(s =>
-      '<span class="word-chip" onclick="showChip(\'' + s.uzbekcha + '\')">' + s.uzbekcha + '</span>'
+  let tanlanganToifa = null;
+
+function toifalarniKorsat(){
+    const toifalar = [...new Set(sozlar.map(s => s.toifa))];
+    const wrap = document.getElementById('toifa-list');
+    wrap.innerHTML = toifalar.map(t =>
+        '<span class="word-chip toifa-chip' + (t === tanlanganToifa ? ' active' : '') + '" onclick="toifaTanla(\'' + t + '\')">' + t + '</span>'
     ).join('');
-  }
+}
+
+function toifaTanla(toifa){
+    tanlanganToifa = (tanlanganToifa === toifa) ? null : toifa;
+    toifalarniKorsat();
+    renderChips();
+}
+
+function renderChips(){
+    const wrap = document.getElementById('chip-list');
+    let royxat = tanlanganToifa ? sozlar.filter(s => s.toifa === tanlanganToifa) : sozlar.slice(3, 11);
+    wrap.innerHTML = royxat.map(s =>
+        '<span class="word-chip" onclick="showChip(\'' + s.uzbekcha + '\')">' + s.uzbekcha + '</span>'
+    ).join('');
+}
 
   function tarixgaQoshish(arabcha, translit, uzbekcha){
     let tarix = JSON.parse(localStorage.getItem('qidiruv_tarixi') || '[]');
