@@ -552,14 +552,21 @@ window.googleChiqish = async function(){
   </div>
 </div>
 
-    <div class="screen-body" id="tab-dastur" style="display:none;">
-      <h1 class="title i18n" style="font-size:24px;">Dastur haqida</h1>
-      <div class="about-block">
-        <p><b>Arabcha Lug'at</b> — A1 darajadagi arab tili o'rganuvchilar uchun yaratilgan kichik lug'at ilovasi.</p><br>
-        <p>Ilova kundalik hayotda tez-tez ishlatiladigan so'zlarni o'z ichiga oladi: salomlashish, oila, ranglar, sonlar, fe'llar va boshqalar.</p><br>
-        <p>Loyiha hozircha rivojlanish bosqichida — yaqin orada yangi so'zlar, ovozli talaffuz va boshqa foydali funksiyalar qo'shiladi.</p>
-      </div>
-    </div>
+    <div class="screen-body" id="tab-ilova-haqida" style="display:none;">
+  <h1 class="title i18n" style="font-size:24px;">Dastur haqida</h1>
+  <div class="about-block">
+    <p><b>Arabcha Lug'at</b> — A1 darajadagi arab tili o'rganuvchilar uchun yaratilgan kichik lug'at ilovasi.</p><br>
+    <p>Ilova kundalik hayotda tez-tez ishlatiladigan so'zlarni o'z ichiga oladi: salomlashish, oila, ranglar, sonlar, fe'llar va boshqalar.</p><br>
+    <p>Loyiha hozircha rivojlanish bosqichida — yaqin orada yangi so'zlar, ovozli talaffuz va boshqa foydali funksiyalar qo'shiladi.</p>
+  </div>
+</div>
+
+<div class="screen-body" id="tab-saqlangan" style="display:none;">
+  <h1 class="title" style="font-size:24px;">Saqlangan so'zlar</h1>
+  <p class="subtitle" style="margin-bottom:20px;">Kerakli so'zlarni yulduzcha bilan belgilab, shu yerda saqlab qo'yishingiz mumkin.</p>
+  <div id="saqlangan-list"></div>
+  <p id="saqlangan-bosh" style="text-align:center; color:var(--text-muted); font-size:13px; margin-top:40px;">Hali saqlangan so'zlar yo'q</p>
+</div>
 
     <div class="screen-body" id="tab-yordam" style="display:none;">
       <h1 class="title i18n" style="font-size:24px;">Yordam</h1>
@@ -583,44 +590,45 @@ window.googleChiqish = async function(){
     </div>
 
    <div class="screen-body" id="tab-profil" style="display:none;">
-    <div class="avatar" id="avatar-initials" style="cursor:pointer; background-size:cover; background-position:center;" onclick="document.getElementById('rasm-input').click()">AA</div>
-<input type="file" id="rasm-input" accept="image/*" style="display:none;" onchange="rasmYukla(event)">
-<p style="text-align:center; font-size:11px; color:var(--text-muted); margin-top:-16px; margin-bottom:20px;">Rasmni o'zgartirish uchun bosing</p>
-  <div class="profile-field"><span>Ism</span><span id="p-ism">—</span></div>
-  <div class="profile-field"><span>Familiya</span><span id="p-familiya">—</span></div>
 
-  <div class="field" style="margin-top:20px;">
-    <label>Email</label>
-    <input type="text" id="p-email" placeholder="email@misol.com">
+  <div style="background:var(--night-2); border:1px solid var(--line); border-radius:16px; padding:18px; margin-bottom:24px; position:relative;">
+    <button onclick="chiqish()" style="position:absolute; top:14px; right:14px; background:none; border:none; color:var(--text-muted); font-size:18px; cursor:pointer;">&#8618;</button>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <div class="avatar" id="avatar-initials" style="width:56px; height:56px; margin:0; font-size:20px; cursor:pointer; background-size:cover; background-position:center;" onclick="document.getElementById('rasm-input').click()">AA</div>
+      <input type="file" id="rasm-input" accept="image/*" style="display:none;" onchange="rasmYukla(event)">
+      <div>
+        <div id="p-ism-full" style="font-weight:700; font-size:16px; color:var(--text);">Foydalanuvchi</div>
+        <div id="p-email-view" style="font-size:12px; color:var(--text-muted); margin-top:2px;">—</div>
+        <span style="display:inline-block; margin-top:6px; background:rgba(212,175,106,0.15); color:var(--gold); font-size:10px; padding:3px 8px; border-radius:6px;">Google</span>
+      </div>
+    </div>
   </div>
- <div class="field">
-  <label>Davlat</label>
-  <input type="text" id="p-davlat" list="davlat-royxati-2" placeholder="Davlat nomini yozing" oninput="kodniYangila('p')" autocomplete="off">
-  <datalist id="davlat-royxati-2"></datalist>
-</div>
-<div class="field">
-  <label>Telefon raqam</label>
-  <div style="display:flex; gap:8px;">
-    <span id="p-kod" style="background:var(--night-2); border:1px solid var(--line); border-radius:12px; padding:14px 12px; color:var(--gold); font-weight:600; white-space:nowrap;">+</span>
-    <input type="text" id="p-nomer" placeholder="90 123 45 67" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)">
+
+  <div class="word-list-label">Mavzu</div>
+  <div style="display:flex; gap:8px; margin-bottom:20px;">
+    <button class="mavzu-tanlov" data-rejim="tizim" onclick="mavzuniOrnat('tizim')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:12px; cursor:pointer;">Tizimga qarab</button>
+    <button class="mavzu-tanlov" data-rejim="kunduzgi" onclick="mavzuniOrnat('kunduzgi')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:12px; cursor:pointer;">Kunduzgi</button>
+    <button class="mavzu-tanlov" data-rejim="tungi" onclick="mavzuniOrnat('tungi')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:12px; cursor:pointer;">Tungi</button>
   </div>
-</div>
 
-<div class="word-list-label" style="margin-top:24px;">Mavzu</div>
-<div style="display:flex; gap:8px; margin-bottom:20px;">
-  <button class="mavzu-tanlov" data-rejim="tizim" onclick="mavzuniOrnat('tizim')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:12px; cursor:pointer;">Tizimga qarab</button>
-  <button class="mavzu-tanlov" data-rejim="kunduzgi" onclick="mavzuniOrnat('kunduzgi')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:12px; cursor:pointer;">Kunduzgi</button>
-  <button class="mavzu-tanlov" data-rejim="tungi" onclick="mavzuniOrnat('tungi')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:12px; cursor:pointer;">Tungi</button>
-</div>
+  <div class="word-list-label">Yozuv</div>
+  <div style="display:flex; gap:8px; margin-bottom:20px;">
+    <button class="yozuv-tanlov" data-rejim="lotin" onclick="yozuvTuriniOrnat('lotin')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:13px; cursor:pointer;">Lotin</button>
+    <button class="yozuv-tanlov" data-rejim="kirill" onclick="yozuvTuriniOrnat('kirill')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:13px; cursor:pointer;">Кирилл</button>
+  </div>
 
-<div class="word-list-label" style="margin-top:24px;">Yozuv</div>
-<div style="display:flex; gap:8px; margin-bottom:20px;">
-  <button class="yozuv-tanlov" data-rejim="lotin" onclick="yozuvTuriniOrnat('lotin')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:13px; cursor:pointer;">Lotin</button>
-  <button class="yozuv-tanlov" data-rejim="kirill" onclick="yozuvTuriniOrnat('kirill')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:13px; cursor:pointer;">Кирилл</button>
-</div>
+  <div class="word-list-label">Ilova haqida</div>
+  <div class="help-item" style="margin-bottom:24px;" onclick="setTab('dastur')">
+    <div class="help-icon">&#8505;</div>
+    <div><p>Ilova haqida</p><span>Bushro ilovasi haqida ma'lumot</span></div>
+  </div>
 
-<button class="btn-primary" onclick="profilniSaqla()">Saqlash</button>
-  <button class="btn-primary" style="margin-top:12px; background:#E24B4A; color:#fff;" onclick="chiqish()">Hisobdan chiqish</button>
+  <div style="text-align:center; padding:20px 0 10px;">
+    <img src="icon-192.png" style="width:56px; height:56px; border-radius:14px; margin-bottom:10px;">
+    <div style="font-weight:700; color:var(--text); font-size:14px;">Arabcha Lug'at</div>
+    <div style="color:var(--text-muted); font-size:11px; margin-top:4px;">© 2026 Ali_Arobiy.uz</div>
+  </div>
+
 </div>
 
     <div class="navbar">
@@ -1071,40 +1079,16 @@ function chiqish(){
     goScreen('screen-kirish1');
 }
 
-function profilniSaqla(){
-    const email = document.getElementById('p-email').value.trim();
-    const kod = document.getElementById('p-kod').textContent;
-const nomerRaqam = document.getElementById('p-nomer').value.trim();
-const nomer = nomerRaqam ? (kod + ' ' + nomerRaqam) : '';
-    const davlatInput = document.getElementById('p-davlat').value.trim();
-const davlatMos = davlatlar.find(d => d.nom === davlatInput);
-if(!davlatMos){
-    alert("Iltimos, ro'yxatdan davlatni to'g'ri tanlang");
-    return;
-}
-const davlat = davlatMos.nom;
+function profilniKorsat(){
+    const ism = localStorage.getItem('foydalanuvchi_ism') || 'Foydalanuvchi';
+    const familiya = localStorage.getItem('foydalanuvchi_familiya') || '';
+    const email = localStorage.getItem('foydalanuvchi_email') || '—';
 
-    localStorage.setItem('foydalanuvchi_email', email);
-    localStorage.setItem('foydalanuvchi_nomer', nomer);
-    localStorage.setItem('foydalanuvchi_davlat', davlat);
+    document.getElementById('p-ism-full').textContent = (ism + ' ' + familiya).trim();
+    document.getElementById('p-email-view').textContent = email;
 
-    saveToFirebase({
-        ism: localStorage.getItem('foydalanuvchi_ism') || '',
-        familiya: localStorage.getItem('foydalanuvchi_familiya') || '',
-        email: email,
-        nomer: nomer,
-        davlat: davlat,
-        turi: 'profil_yangilash',
-        sana: new Date().toISOString()
-    });
-
-    alert('Ma\'lumotlar saqlandi');
-}
-
-function profilniYukla(){
-    document.getElementById('p-email').value = localStorage.getItem('foydalanuvchi_email') || '';
-    document.getElementById('p-nomer').value = localStorage.getItem('foydalanuvchi_nomer') || '';
-    document.getElementById('p-davlat').value = localStorage.getItem('foydalanuvchi_davlat') || '';
+    const initials = (ism[0] || 'A') + ((familiya[0]) || 'A');
+    document.getElementById('avatar-initials').textContent = initials.toUpperCase();
     avatarniKorsat();
 }
 
@@ -1158,23 +1142,20 @@ function avatarniKorsat(){
     }
 }
 
-  function goScreen(id){
+ function goScreen(id){
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     if(id === 'screen-app'){
-      const ism = document.getElementById('kirish-ism').value.trim() || 'Foydalanuvchi';
-      const familiya = document.getElementById('kirish-familiya').value.trim();
+    const kirishIsm = document.getElementById('kirish-ism').value.trim();
+    const kirishFamiliya = document.getElementById('kirish-familiya').value.trim();
 
-      localStorage.setItem('foydalanuvchi_ism', ism);
-      localStorage.setItem('foydalanuvchi_familiya', familiya);
-
-      document.getElementById('p-ism').textContent = ism;
-      document.getElementById('p-familiya').textContent = familiya || '—';
-      const initials = (ism[0] || 'A') + (familiya[0] || 'A');
-      document.getElementById('avatar-initials').textContent = initials.toUpperCase();
-      renderChips();
-      tarixniKorsat();
+    if(kirishIsm){
+        localStorage.setItem('foydalanuvchi_ism', kirishIsm);
+        localStorage.setItem('foydalanuvchi_familiya', kirishFamiliya);
     }
+
+    renderChips();
+}
 }
 
  function setTab(tab){
@@ -1183,7 +1164,7 @@ function avatarniKorsat(){
       document.getElementById('navbtn-' + t).classList.toggle('active', t === tab);
     });
     if(tab === 'profil'){
-        profilniYukla();
+        profilniKorsat();
     }
 }
 
@@ -1283,7 +1264,7 @@ function tarixniTozala(){
   function showChip(uz){
     setLang('uz');
     document.getElementById('qidiruv').value = uz;
-    qidir();
+    qidir(); 
   }
 
   if ('serviceWorker' in navigator) {
@@ -1295,16 +1276,10 @@ function tarixniTozala(){
     yozuvniQollash();
     shriftniYukla();
     davlatRoyxatiniToldir('davlat-royxati-1');
-    davlatRoyxatiniToldir('davlat-royxati-2');
     kodniYangila('kirish');
-    kodniYangila('p');
 
-    const saqlanganIsm = localStorage.getItem('foydalanuvchi_ism');
+   const saqlanganIsm = localStorage.getItem('foydalanuvchi_ism');
     if(saqlanganIsm){
-        document.getElementById('p-ism').textContent = saqlanganIsm;
-        document.getElementById('p-familiya').textContent = localStorage.getItem('foydalanuvchi_familiya') || '—';
-        const initials = (saqlanganIsm[0] || 'A') + ((localStorage.getItem('foydalanuvchi_familiya') || 'A')[0]);
-        document.getElementById('avatar-initials').textContent = initials.toUpperCase();
         goScreen('screen-app');
         setTab('qidiruv');
         renderChips();
