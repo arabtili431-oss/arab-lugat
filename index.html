@@ -9,6 +9,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  .mavzu-tanlov.active{
+    background: var(--gold) !important;
+    color: #20160a !important;
+    border-color: var(--gold) !important;
+}
+.yozuv-tanlov.active{
+    background: var(--gold) !important;
+    color: #20160a !important;
+    border-color: var(--gold) !important;
+}
   :root{
     --night:#10192E;
     --night-2:#17233F;
@@ -20,6 +30,20 @@
     --text-muted:#8D96AE;
     --line: rgba(212,175,106,0.18);
   }
+  body.light-mode{
+    --night:#F5F1E8;
+    --night-2:#FFFFFF;
+    --night-3:#EFE9DC;
+    --gold:#B8863F;
+    --gold-dim:#8C7038;
+    --teal:#1E8C7E;
+    --text:#2A2418;
+    --text-muted:#6B6455;
+    --line: rgba(184,134,63,0.25);
+}
+body.light-mode .phone{
+    box-shadow: 0 30px 80px rgba(0,0,0,0.15);
+}
   *{box-sizing:border-box; margin:0; padding:0;}
   body{
     font-family:'Inter', sans-serif;
@@ -218,13 +242,13 @@
   }
   .result-arabic{
     font-family:'Amiri', serif;
-    font-size:38px;
+    font-size: calc(38px * var(--arab-shrift, 100%) / 100%);
     color:var(--gold);
     margin-bottom:8px;
     direction:rtl;
   }
   .result-translit{
-    font-size:13px;
+    font-size: calc(13px * var(--translit-shrift, 100%) / 100%);
     color:var(--teal);
     letter-spacing:0.5px;
   }
@@ -340,6 +364,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCGbaAdTVgbTvSScDsKom3aGMW7l1HVsxo",
@@ -352,6 +377,28 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+
+  const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+window.googleBilanKirish = async function(){
+    try {
+        const natija = await signInWithPopup(auth, provider);
+        const user = natija.user;
+        localStorage.setItem('foydalanuvchi_ism', user.displayName ? user.displayName.split(' ')[0] : '');
+        localStorage.setItem('foydalanuvchi_familiya', user.displayName ? user.displayName.split(' ').slice(1).join(' ') : '');
+        localStorage.setItem('foydalanuvchi_email', user.email || '');
+        localStorage.setItem('foydalanuvchi_rasm_url', user.photoURL || '');
+        window.location.reload();
+    } catch (e) {
+        console.error("Google kirish xatosi:", e);
+        alert("Kirishda xatolik yuz berdi, qaytadan urinib ko'ring");
+    }
+}
+
+window.googleChiqish = async function(){
+    await signOut(auth);
+}
 
   window.saveToFirebase = async function(data){
     try {
@@ -368,22 +415,30 @@
   <div class="star-pattern"></div>
 
   <div class="screen active" id="screen-kirish1">
-    <div class="screen-body">
-      <div class="eyebrow">1 / 2</div>
-      <h1 class="title">Sizni tanishtiring</h1>
-      <p class="subtitle">Arab tili safariga birga chiqamiz. Avval ismingiz bilan tanishaylik.</p>
-      <div class="field">
-        <label>Ism</label>
-        <input type="text" id="kirish-ism" placeholder="Ismingizni kiriting">
-      </div>
-      <div class="field">
-        <label>Familiya</label>
-        <input type="text" id="kirish-familiya" placeholder="Familiyangizni kiriting">
-      </div>
-      <button class="btn-primary" onclick="goScreen('screen-kirish2')">Keyingisi</button>
-      <div class="dots"><div class="dot on"></div><div class="dot"></div></div>
+  <div class="screen-body">
+    <div class="eyebrow">1 / 2</div>
+    <h1 class="title">Sizni tanishtiring</h1>
+    <p class="subtitle">Arab tili safariga birga chiqamiz. Avval ismingiz bilan tanishaylik.</p>
+
+    <button class="btn-primary" style="background:#fff; color:#20160a; display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:20px;" onclick="googleBilanKirish()">
+      <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84c-.21 1.13-.84 2.09-1.8 2.73v2.27h2.92c1.7-1.57 2.68-3.88 2.68-6.64z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.27c-.81.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.71H.96v2.33C2.44 15.98 5.48 18 9 18z"/><path fill="#FBBC05" d="M3.97 10.7c-.18-.54-.28-1.11-.28-1.7s.1-1.16.28-1.7V4.97H.96C.35 6.17 0 7.55 0 9s.35 2.83.96 4.03l3.01-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0 5.48 0 2.44 2.02.96 4.97l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"/></svg>
+      Google orqali kirish
+    </button>
+
+    <div style="text-align:center; color:var(--text-muted); font-size:12px; margin-bottom:20px;">yoki qo'lda kiriting</div>
+
+    <div class="field">
+      <label>Ism</label>
+      <input type="text" id="kirish-ism" placeholder="Ismingizni kiriting">
     </div>
+    <div class="field">
+      <label>Familiya</label>
+      <input type="text" id="kirish-familiya" placeholder="Familiyangizni kiriting">
+    </div>
+    <button class="btn-primary" onclick="goScreen('screen-kirish2')">Keyingisi</button>
+    <div class="dots"><div class="dot on"></div><div class="dot"></div></div>
   </div>
+</div>
 
   <div class="screen" id="screen-kirish2">
     <div class="screen-body">
@@ -438,14 +493,18 @@
   </div>
 
   <div class="screen" id="screen-app">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+  <span style="font-family:'Amiri', serif; font-size:20px; font-weight:700; color:var(--gold);">Arabcha Lug'at</span>
+  <button onclick="shriftOynasiniOch()" style="background:var(--night-2); border:1px solid var(--line); border-radius:10px; padding:8px 12px; color:var(--text); font-size:13px; font-weight:700; cursor:pointer;">A A</button>
+</div>
     <div class="screen-body" id="tab-qidiruv">
-      <h1 class="title" style="font-size:24px;">Qidiruv</h1>
-      <p class="subtitle" style="margin-bottom:20px;">So'zni ikkala tilda ham qidirishingiz mumkin.</p>
+      <h1 class="title i18n" style="font-size:24px;">Qidiruv</h1>
+<p class="subtitle i18n" style="margin-bottom:20px;">So'zni ikkala tilda ham qidirishingiz mumkin.</p>
 
-      <div class="lang-toggle">
-        <button class="active" id="lang-uz" onclick="setLang('uz')">O'zbekcha</button>
-        <button id="lang-ar" onclick="setLang('ar')">Arabcha</button>
-      </div>
+<div class="lang-toggle">
+  <button class="active" id="lang-uz" onclick="setLang('uz')"><span class="i18n">O'zbekcha</span></button>
+ <button id="lang-ar" onclick="setLang('ar')">Arabcha</button>
+</div>
 
       <div class="search-wrap">
         <input type="text" id="qidiruv" placeholder="So'z kiriting..." onkeypress="if(event.key==='Enter') qidir()">
@@ -466,8 +525,35 @@
 <div id="chip-list"></div>
     </div>
 
+    <div id="shrift-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:100; align-items:flex-end; justify-content:center;" onclick="if(event.target===this) shriftOynasiniYop()">
+  <div style="background:var(--night-2); border-radius:20px 20px 0 0; padding:28px; width:100%; max-width:390px;">
+    <h3 style="font-family:'Amiri', serif; font-size:20px; margin-bottom:20px; color:var(--text);">Shrift o'lchami</h3>
+
+    <div style="margin-bottom:20px;">
+      <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-muted); margin-bottom:8px;">
+        <span>Arabcha so'z</span>
+        <span id="shrift-arab-qiymat">100%</span>
+      </div>
+      <input type="range" id="shrift-arab" min="80" max="150" value="100" style="width:100%;" oninput="shriftOzgartir()">
+    </div>
+
+    <div style="margin-bottom:24px;">
+      <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-muted); margin-bottom:8px;">
+        <span>Tarjima matni</span>
+        <span id="shrift-translit-qiymat">100%</span>
+      </div>
+      <input type="range" id="shrift-translit" min="80" max="150" value="100" style="width:100%;" oninput="shriftOzgartir()">
+    </div>
+
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <span onclick="shriftTiklash()" style="color:var(--teal); font-size:14px; cursor:pointer;">Tiklash</span>
+      <button class="btn-primary" style="width:auto; padding:12px 32px;" onclick="shriftOynasiniYop()">Yopish</button>
+    </div>
+  </div>
+</div>
+
     <div class="screen-body" id="tab-dastur" style="display:none;">
-      <h1 class="title" style="font-size:24px;">Dastur haqida</h1>
+      <h1 class="title i18n" style="font-size:24px;">Dastur haqida</h1>
       <div class="about-block">
         <p><b>Arabcha Lug'at</b> — A1 darajadagi arab tili o'rganuvchilar uchun yaratilgan kichik lug'at ilovasi.</p><br>
         <p>Ilova kundalik hayotda tez-tez ishlatiladigan so'zlarni o'z ichiga oladi: salomlashish, oila, ranglar, sonlar, fe'llar va boshqalar.</p><br>
@@ -476,8 +562,8 @@
     </div>
 
     <div class="screen-body" id="tab-yordam" style="display:none;">
-      <h1 class="title" style="font-size:24px;">Yordam</h1>
-      <p class="subtitle" style="margin-bottom:20px;">Savol yoki taklifingiz bo'lsa, biz bilan bog'laning.</p>
+      <h1 class="title i18n" style="font-size:24px;">Yordam</h1>
+<p class="subtitle i18n" style="margin-bottom:20px;">Savol yoki taklifingiz bo'lsa, biz bilan bog'laning.</p>
       <a class="help-item" href="https://t.me/arabtilini_organamiz0" target="_blank">
   <div class="help-icon">&#9992;</div>
   <div><p>Telegram</p><span>Kanalimizga qo'shiling</span></div>
@@ -520,26 +606,39 @@
   </div>
 </div>
 
-  <button class="btn-primary" onclick="profilniSaqla()">Saqlash</button>
+<div class="word-list-label" style="margin-top:24px;">Mavzu</div>
+<div style="display:flex; gap:8px; margin-bottom:20px;">
+  <button class="mavzu-tanlov" data-rejim="tizim" onclick="mavzuniOrnat('tizim')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:12px; cursor:pointer;">Tizimga qarab</button>
+  <button class="mavzu-tanlov" data-rejim="kunduzgi" onclick="mavzuniOrnat('kunduzgi')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:12px; cursor:pointer;">Kunduzgi</button>
+  <button class="mavzu-tanlov" data-rejim="tungi" onclick="mavzuniOrnat('tungi')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:12px; cursor:pointer;">Tungi</button>
+</div>
+
+<div class="word-list-label" style="margin-top:24px;">Yozuv</div>
+<div style="display:flex; gap:8px; margin-bottom:20px;">
+  <button class="yozuv-tanlov" data-rejim="lotin" onclick="yozuvTuriniOrnat('lotin')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:13px; cursor:pointer;">Lotin</button>
+  <button class="yozuv-tanlov" data-rejim="kirill" onclick="yozuvTuriniOrnat('kirill')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:13px; cursor:pointer;">Кирилл</button>
+</div>
+
+<button class="btn-primary" onclick="profilniSaqla()">Saqlash</button>
   <button class="btn-primary" style="margin-top:12px; background:#E24B4A; color:#fff;" onclick="chiqish()">Hisobdan chiqish</button>
 </div>
 
     <div class="navbar">
       <button class="nav-item active" id="navbtn-qidiruv" onclick="setTab('qidiruv')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        Qidiruv
+        <span class="i18n">Qidiruv</span>
       </button>
       <button class="nav-item" id="navbtn-dastur" onclick="setTab('dastur')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        Dastur
+        <span class="i18n">Dastur</span>
       </button>
       <button class="nav-item" id="navbtn-yordam" onclick="setTab('yordam')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.09 9a3 3 0 1 1 5.83 1c0 2-3 2-3 4"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        Yordam
+        <span class="i18n">Yordam</span>
       </button>
       <button class="nav-item" id="navbtn-profil" onclick="setTab('profil')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
-        Profil
+        <span class="i18n">Profil</span>
       </button>
     </div>
   </div>
@@ -854,6 +953,113 @@ goScreen('screen-app');
 setTab('qidiruv');
 }
 
+function mavzuniOrnat(rejim){
+    localStorage.setItem('mavzu_rejimi', rejim);
+    qollash();
+}
+
+function translitLatToCyr(str){
+    const pairs = [
+        [/sh/g,'ш'],[/Sh/g,'Ш'],[/SH/g,'Ш'],
+        [/ch/g,'ч'],[/Ch/g,'Ч'],[/CH/g,'Ч'],
+        [/yo/g,'ё'],[/Yo/g,'Ё'],
+        [/yu/g,'ю'],[/Yu/g,'Ю'],
+        [/ya/g,'я'],[/Ya/g,'Я'],
+        [/o'|o‘|oʻ/g,'ў'],[/O'|O‘|Oʻ/g,'Ў'],
+        [/g'|g‘|gʻ/g,'ғ'],[/G'|G‘|Gʻ/g,'Ғ'],
+        [/a/g,'а'],[/A/g,'А'],[/b/g,'б'],[/B/g,'Б'],
+        [/d/g,'д'],[/D/g,'Д'],[/e/g,'е'],[/E/g,'Е'],
+        [/f/g,'ф'],[/F/g,'Ф'],[/g/g,'г'],[/G/g,'Г'],
+        [/h/g,'ҳ'],[/H/g,'Ҳ'],[/i/g,'и'],[/I/g,'И'],
+        [/j/g,'ж'],[/J/g,'Ж'],[/k/g,'к'],[/K/g,'К'],
+        [/l/g,'л'],[/L/g,'Л'],[/m/g,'м'],[/M/g,'М'],
+        [/n/g,'н'],[/N/g,'Н'],[/o/g,'о'],[/O/g,'О'],
+        [/p/g,'п'],[/P/g,'П'],[/q/g,'қ'],[/Q/g,'Қ'],
+        [/r/g,'р'],[/R/g,'Р'],[/s/g,'с'],[/S/g,'С'],
+        [/t/g,'т'],[/T/g,'Т'],[/u/g,'у'],[/U/g,'У'],
+        [/v/g,'в'],[/V/g,'В'],[/x/g,'х'],[/X/g,'Х'],
+        [/y/g,'й'],[/Y/g,'Й'],[/z/g,'з'],[/Z/g,'З']
+    ];
+    let natija = str;
+    pairs.forEach(([from,to]) => { natija = natija.replace(from, to); });
+    return natija;
+}
+
+function elementniOzgartir(el){
+    if(!el.dataset.origLotin){
+        el.dataset.origLotin = el.textContent;
+    }
+    const rejim = localStorage.getItem('yozuv_turi') || 'lotin';
+    el.textContent = (rejim === 'kirill') ? translitLatToCyr(el.dataset.origLotin) : el.dataset.origLotin;
+}
+
+function yozuvniQollash(){
+    document.querySelectorAll('.i18n').forEach(elementniOzgartir);
+    document.querySelectorAll('.yozuv-tanlov').forEach(el=>{
+        el.classList.toggle('active', el.dataset.rejim === (localStorage.getItem('yozuv_turi') || 'lotin'));
+    });
+}
+
+function yozuvTuriniOrnat(rejim){
+    localStorage.setItem('yozuv_turi', rejim);
+    yozuvniQollash();
+}
+
+function shriftOynasiniOch(){
+    document.getElementById('shrift-overlay').style.display = 'flex';
+}
+
+function shriftOynasiniYop(){
+    document.getElementById('shrift-overlay').style.display = 'none';
+}
+
+function shriftOzgartir(){
+    const arabFoiz = document.getElementById('shrift-arab').value;
+    const translitFoiz = document.getElementById('shrift-translit').value;
+
+    document.getElementById('shrift-arab-qiymat').textContent = arabFoiz + '%';
+    document.getElementById('shrift-translit-qiymat').textContent = translitFoiz + '%';
+
+    document.documentElement.style.setProperty('--arab-shrift', arabFoiz + '%');
+    document.documentElement.style.setProperty('--translit-shrift', translitFoiz + '%');
+
+    localStorage.setItem('shrift_arab', arabFoiz);
+    localStorage.setItem('shrift_translit', translitFoiz);
+}
+
+function shriftTiklash(){
+    document.getElementById('shrift-arab').value = 100;
+    document.getElementById('shrift-translit').value = 100;
+    shriftOzgartir();
+}
+
+function shriftniYukla(){
+    const arabFoiz = localStorage.getItem('shrift_arab') || 100;
+    const translitFoiz = localStorage.getItem('shrift_translit') || 100;
+    document.getElementById('shrift-arab').value = arabFoiz;
+    document.getElementById('shrift-translit').value = translitFoiz;
+    shriftOzgartir();
+}
+
+function qollash(){
+    const rejim = localStorage.getItem('mavzu_rejimi') || 'tizim';
+    let yorugMi;
+
+    if(rejim === 'kunduzgi'){
+        yorugMi = true;
+    } else if(rejim === 'tungi'){
+        yorugMi = false;
+    } else {
+        yorugMi = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+    }
+
+    document.body.classList.toggle('light-mode', yorugMi);
+
+    document.querySelectorAll('.mavzu-tanlov').forEach(el => {
+        el.classList.toggle('active', el.dataset.rejim === rejim);
+    });
+}
+
 function chiqish(){
     localStorage.removeItem('foydalanuvchi_ism');
     localStorage.removeItem('foydalanuvchi_familiya');
@@ -1085,7 +1291,9 @@ function tarixniTozala(){
   }
 
   window.addEventListener('load', function(){
-    window.addEventListener('load', function(){
+    qollash();
+    yozuvniQollash();
+    shriftniYukla();
     davlatRoyxatiniToldir('davlat-royxati-1');
     davlatRoyxatiniToldir('davlat-royxati-2');
     kodniYangila('kirish');
@@ -1103,18 +1311,7 @@ function tarixniTozala(){
         tarixniKorsat();
     }
 });
-    const saqlanganIsm = localStorage.getItem('foydalanuvchi_ism');
-    if(saqlanganIsm){
-        document.getElementById('p-ism').textContent = saqlanganIsm;
-        document.getElementById('p-familiya').textContent = localStorage.getItem('foydalanuvchi_familiya') || '—';
-        const initials = (saqlanganIsm[0] || 'A') + ((localStorage.getItem('foydalanuvchi_familiya') || 'A')[0]);
-        document.getElementById('avatar-initials').textContent = initials.toUpperCase();
-        goScreen('screen-app');
-        setTab('qidiruv');
-        renderChips();
-    }
-});
-
+   
 </script>
 
 </body>
