@@ -269,6 +269,14 @@ body.light-mode .phone{
 .yulduzcha.active{
     color: var(--gold);
 }
+.ovoz-tugma{
+    position: absolute;
+    top: 14px;
+    left: 16px;
+    font-size: 20px;
+    color: var(--teal);
+    cursor: pointer;
+}
   .word-list-label{
     font-size:12px;
     color:var(--text-muted);
@@ -290,6 +298,11 @@ body.light-mode .phone{
     cursor:pointer;
   }
   .word-chip:hover{ border-color:var(--gold); }
+  .toifa-chip.active{
+    background: var(--gold);
+    color: #20160a;
+    border-color: var(--gold);
+  }
 
   .about-block{
     background:var(--night-2);
@@ -429,25 +442,25 @@ window.googleChiqish = async function(){
   <div class="screen active" id="screen-kirish1">
   <div class="screen-body">
     <div class="eyebrow">1 / 2</div>
-    <h1 class="title">Sizni tanishtiring</h1>
-    <p class="subtitle">Arab tili safariga birga chiqamiz. Avval ismingiz bilan tanishaylik.</p>
+    <h1 class="title i18n">Sizni tanishtiring</h1>
+    <p class="subtitle i18n">Arab tili safariga birga chiqamiz. Avval ismingiz bilan tanishaylik.</p>
 
     <button class="btn-primary" style="background:#fff; color:#20160a; display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:20px;" onclick="googleBilanKirish()">
       <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84c-.21 1.13-.84 2.09-1.8 2.73v2.27h2.92c1.7-1.57 2.68-3.88 2.68-6.64z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.27c-.81.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.71H.96v2.33C2.44 15.98 5.48 18 9 18z"/><path fill="#FBBC05" d="M3.97 10.7c-.18-.54-.28-1.11-.28-1.7s.1-1.16.28-1.7V4.97H.96C.35 6.17 0 7.55 0 9s.35 2.83.96 4.03l3.01-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0 5.48 0 2.44 2.02.96 4.97l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"/></svg>
-      Google orqali kirish
+      <span class="i18n">Google orqali kirish</span>
     </button>
 
-    <div style="text-align:center; color:var(--text-muted); font-size:12px; margin-bottom:20px;">yoki qo'lda kiriting</div>
+    <div class="i18n" style="text-align:center; color:var(--text-muted); font-size:12px; margin-bottom:20px;">yoki qo'lda kiriting</div>
 
     <div class="field">
-      <label>Ism</label>
+      <label class="i18n">Ism</label>
       <input type="text" id="kirish-ism" placeholder="Ismingizni kiriting">
     </div>
     <div class="field">
-      <label>Familiya</label>
+      <label class="i18n">Familiya</label>
       <input type="text" id="kirish-familiya" placeholder="Familiyangizni kiriting">
     </div>
-    <button class="btn-primary" onclick="goScreen('screen-kirish2')">Keyingisi</button>
+    <button class="btn-primary i18n" onclick="goScreen('screen-kirish2')">Keyingisi</button>
     <div class="dots"><div class="dot on"></div><div class="dot"></div></div>
   </div>
 </div>
@@ -455,15 +468,15 @@ window.googleChiqish = async function(){
   <div class="screen" id="screen-kirish2">
     <div class="screen-body">
       <div class="eyebrow">2 / 2</div>
-      <h1 class="title">Tug'ilgan sanangiz</h1>
-      <p class="subtitle">Bu ma'lumot sizga mos darslarni tavsiya qilishga yordam beradi.</p>
+      <h1 class="title i18n">Tug'ilgan sanangiz</h1>
+      <p class="subtitle i18n">Bu ma'lumot sizga mos darslarni tavsiya qilishga yordam beradi.</p>
       <div class="row-3">
   <div class="field">
-    <label>Yil</label>
+    <label class="i18n">Yil</label>
     <input type="number" id="kirish-yil" placeholder="2005" min="1900" max="2100" oninput="if(this.value.length>4) this.value=this.value.slice(0,4)">
   </div>
   <div class="field">
-    <label>Oy</label>
+    <label class="i18n">Oy</label>
     <select id="kirish-oy">
       <option value="">Tanlang</option>
       <option value="1">Yanvar</option>
@@ -481,25 +494,25 @@ window.googleChiqish = async function(){
     </select>
   </div>
   <div class="field">
-    <label>Kun</label>
+    <label class="i18n">Kun</label>
     <input type="number" id="kirish-kun" placeholder="14" min="1" max="31" oninput="if(this.value.length>2) this.value=this.value.slice(0,2)">
   </div>
 </div>
 
        <div class="field">
-  <label>Davlat</label>
+  <label class="i18n">Davlat</label>
   <input type="text" id="kirish-davlat" list="davlat-royxati-1" placeholder="Davlat nomini yozing" oninput="kodniYangila('kirish')" autocomplete="off">
   <datalist id="davlat-royxati-1"></datalist>
 </div>
 <div class="field">
-  <label>Telefon raqam</label>
+  <label class="i18n">Telefon raqam</label>
   <div style="display:flex; gap:8px;">
     <span id="kirish-kod" style="background:var(--night-2); border:1px solid var(--line); border-radius:12px; padding:14px 12px; color:var(--gold); font-weight:600; white-space:nowrap;">+</span>
    <input type="text" id="kirish-nomer" placeholder="90 123 45 67" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)">
   </div>
 </div>
 <p id="yosh-xato" style="color:#E24B4A; font-size:12px; margin-bottom:14px; display:none;"></p>
-<button class="btn-primary" onclick="tekshirVaBoshla()">Boshlash</button>
+<button class="btn-primary i18n" onclick="tekshirVaBoshla()">Boshlash</button>
       <div class="dots"><div class="dot"></div><div class="dot on"></div></div>
     </div>
   </div>
@@ -524,29 +537,29 @@ window.googleChiqish = async function(){
       </div>
 
       <div class="result-card" id="natija-card">
-        <span class="result-empty">Natija shu yerda chiqadi</span>
+        <span class="result-empty i18n">Natija shu yerda chiqadi</span>
       </div>
 
       <div class="word-list-label" id="tarix-label" style="display:none;">
-  Qidiruv tarixi
-  <span style="float:right; color:var(--teal); cursor:pointer; text-transform:none; font-weight:400;" onclick="tarixniTozala()">Tozalash</span>
+  <span class="i18n">Qidiruv tarixi</span>
+  <span class="i18n" style="float:right; color:var(--teal); cursor:pointer; text-transform:none; font-weight:400;" onclick="tarixniTozala()">Tozalash</span>
 </div>
 <div id="tarix-list"></div>
 
-<div class="word-list-label">Kategoriyalar</div>
+<div class="word-list-label i18n">Kategoriyalar</div>
 <div id="toifa-list" style="margin-bottom:20px;"></div>
 
-<div class="word-list-label">So'zlar</div>
+<div class="word-list-label i18n">So'zlar</div>
 <div id="chip-list"></div>
     </div>
 
     <div id="shrift-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:100; align-items:flex-end; justify-content:center;" onclick="if(event.target===this) shriftOynasiniYop()">
   <div style="background:var(--night-2); border-radius:20px 20px 0 0; padding:28px; width:100%; max-width:390px;">
-    <h3 style="font-family:'Amiri', serif; font-size:20px; margin-bottom:20px; color:var(--text);">Shrift o'lchami</h3>
+    <h3 class="i18n" style="font-family:'Amiri', serif; font-size:20px; margin-bottom:20px; color:var(--text);">Shrift o'lchami</h3>
 
     <div style="margin-bottom:20px;">
       <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-muted); margin-bottom:8px;">
-        <span>Arabcha so'z</span>
+        <span class="i18n">Arabcha so'z</span>
         <span id="shrift-arab-qiymat">100%</span>
       </div>
       <input type="range" id="shrift-arab" min="80" max="150" value="100" style="width:100%;" oninput="shriftOzgartir()">
@@ -554,15 +567,15 @@ window.googleChiqish = async function(){
 
     <div style="margin-bottom:24px;">
       <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-muted); margin-bottom:8px;">
-        <span>Tarjima matni</span>
+        <span class="i18n">Tarjima matni</span>
         <span id="shrift-translit-qiymat">100%</span>
       </div>
       <input type="range" id="shrift-translit" min="80" max="150" value="100" style="width:100%;" oninput="shriftOzgartir()">
     </div>
 
     <div style="display:flex; justify-content:space-between; align-items:center;">
-      <span onclick="shriftTiklash()" style="color:var(--teal); font-size:14px; cursor:pointer;">Tiklash</span>
-      <button class="btn-primary" style="width:auto; padding:12px 32px;" onclick="shriftOynasiniYop()">Yopish</button>
+      <span class="i18n" onclick="shriftTiklash()" style="color:var(--teal); font-size:14px; cursor:pointer;">Tiklash</span>
+      <button class="btn-primary i18n" style="width:auto; padding:12px 32px;" onclick="shriftOynasiniYop()">Yopish</button>
     </div>
   </div>
 </div>
@@ -570,17 +583,17 @@ window.googleChiqish = async function(){
     <div class="screen-body" id="tab-dastur" style="display:none;">
   <h1 class="title i18n" style="font-size:24px;">Dastur haqida</h1>
   <div class="about-block">
-    <p><b>Arabcha Lug'at</b> — A1 darajadagi arab tili o'rganuvchilar uchun yaratilgan kichik lug'at ilovasi.</p><br>
-    <p>Ilova kundalik hayotda tez-tez ishlatiladigan so'zlarni o'z ichiga oladi: salomlashish, oila, ranglar, sonlar, fe'llar va boshqalar.</p><br>
-    <p>Loyiha hozircha rivojlanish bosqichida — yaqin orada yangi so'zlar, ovozli talaffuz va boshqa foydali funksiyalar qo'shiladi.</p>
+    <p><b class="i18n">Arabcha Lug'at</b> <span class="i18n">— A1 darajadagi arab tili o'rganuvchilar uchun yaratilgan kichik lug'at ilovasi.</span></p><br>
+    <p class="i18n">Ilova kundalik hayotda tez-tez ishlatiladigan so'zlarni o'z ichiga oladi: salomlashish, oila, ranglar, sonlar, fe'llar va boshqalar.</p><br>
+    <p class="i18n">Loyiha hozircha rivojlanish bosqichida — yaqin orada yangi so'zlar va boshqa foydali funksiyalar qo'shiladi.</p>
   </div>
 </div>
 
 <div class="screen-body" id="tab-saqlangan" style="display:none;">
-  <h1 class="title" style="font-size:24px;">Saqlangan so'zlar</h1>
-  <p class="subtitle" style="margin-bottom:20px;">Kerakli so'zlarni yulduzcha bilan belgilab, shu yerda saqlab qo'yishingiz mumkin.</p>
+  <h1 class="title i18n" style="font-size:24px;">Saqlangan so'zlar</h1>
+  <p class="subtitle i18n" style="margin-bottom:20px;">Kerakli so'zlarni yulduzcha bilan belgilab, shu yerda saqlab qo'yishingiz mumkin.</p>
   <div id="saqlangan-list"></div>
-  <p id="saqlangan-bosh" style="text-align:center; color:var(--text-muted); font-size:13px; margin-top:40px;">Hali saqlangan so'zlar yo'q</p>
+  <p id="saqlangan-bosh" class="i18n" style="text-align:center; color:var(--text-muted); font-size:13px; margin-top:40px;">Hali saqlangan so'zlar yo'q</p>
 </div>
 
     <div class="screen-body" id="tab-yordam" style="display:none;">
@@ -588,19 +601,19 @@ window.googleChiqish = async function(){
 <p class="subtitle i18n" style="margin-bottom:20px;">Savol yoki taklifingiz bo'lsa, biz bilan bog'laning.</p>
       <a class="help-item" href="https://t.me/arabtilini_organamiz0" target="_blank">
   <div class="help-icon">&#9992;</div>
-  <div><p>Telegram</p><span>Kanalimizga qo'shiling</span></div>
+  <div><p>Telegram</p><span class="i18n">Kanalimizga qo'shiling</span></div>
 </a>
 <a class="help-item" href="https://www.youtube.com/channel/UCfI-y0CRMiYUk5lT7pD0fEQ" target="_blank">
   <div class="help-icon">&#9654;</div>
-  <div><p>YouTube</p><span>Video darslarni tomosha qiling</span></div>
+  <div><p>YouTube</p><span class="i18n">Video darslarni tomosha qiling</span></div>
 </a>
 <a class="help-item" href="https://www.instagram.com/a1iy_arobiy" target="_blank">
   <div class="help-icon">&#9679;</div>
-  <div><p>Instagram</p><span>Bizni kuzatib boring</span></div>
+  <div><p>Instagram</p><span class="i18n">Bizni kuzatib boring</span></div>
 </a>
 <a class="help-item" href="https://t.me/arabtilini_organamiz0" target="_blank">
   <div class="help-icon">&#9993;</div>
-  <div><p>Admin bilan bog'lanish</p><span>Savollaringizga javob beramiz</span></div>
+  <div><p class="i18n">Admin bilan bog'lanish</p><span class="i18n">Savollaringizga javob beramiz</span></div>
 </a>
     </div>
 
@@ -619,23 +632,23 @@ window.googleChiqish = async function(){
     </div>
   </div>
 
-  <div class="word-list-label">Mavzu</div>
+  <div class="word-list-label i18n">Mavzu</div>
   <div style="display:flex; gap:8px; margin-bottom:20px;">
-    <button class="mavzu-tanlov" data-rejim="tizim" onclick="mavzuniOrnat('tizim')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:12px; cursor:pointer;">Tizimga qarab</button>
-    <button class="mavzu-tanlov" data-rejim="kunduzgi" onclick="mavzuniOrnat('kunduzgi')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:12px; cursor:pointer;">Kunduzgi</button>
-    <button class="mavzu-tanlov" data-rejim="tungi" onclick="mavzuniOrnat('tungi')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:12px; cursor:pointer;">Tungi</button>
+    <button class="mavzu-tanlov i18n" data-rejim="tizim" onclick="mavzuniOrnat('tizim')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:12px; cursor:pointer;">Tizimga qarab</button>
+    <button class="mavzu-tanlov i18n" data-rejim="kunduzgi" onclick="mavzuniOrnat('kunduzgi')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:12px; cursor:pointer;">Kunduzgi</button>
+    <button class="mavzu-tanlov i18n" data-rejim="tungi" onclick="mavzuniOrnat('tungi')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:12px; cursor:pointer;">Tungi</button>
   </div>
 
-  <div class="word-list-label">Yozuv</div>
+  <div class="word-list-label i18n">Yozuv</div>
   <div style="display:flex; gap:8px; margin-bottom:20px;">
-    <button class="yozuv-tanlov" data-rejim="lotin" onclick="yozuvTuriniOrnat('lotin')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:13px; cursor:pointer;">Lotin</button>
+    <button class="yozuv-tanlov i18n" data-rejim="lotin" onclick="yozuvTuriniOrnat('lotin')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:13px; cursor:pointer;">Lotin</button>
     <button class="yozuv-tanlov" data-rejim="kirill" onclick="yozuvTuriniOrnat('kirill')" style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--line); background:var(--night-2); color:var(--text); font-size:13px; cursor:pointer;">Кирилл</button>
   </div>
 
-  <div class="word-list-label">Ilova haqida</div>
+  <div class="word-list-label i18n">Ilova haqida</div>
   <div class="help-item" style="margin-bottom:24px;" onclick="setTab('dastur')">
     <div class="help-icon">&#8505;</div>
-    <div><p>Ilova haqida</p><span>Lug'at ilovasi haqida ma'lumot</span></div>
+    <div><p class="i18n">Ilova haqida</p><span class="i18n">Lug'at ilovasi haqida ma'lumot</span></div>
   </div>
 
   <div style="text-align:center; padding:20px 0 10px;">
@@ -650,6 +663,7 @@ window.googleChiqish = async function(){
       <button class="nav-item active" id="navbtn-qidiruv" onclick="setTab('qidiruv')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <span class="i18n">Qidiruv</span>
+      </button>
        <button class="nav-item" id="navbtn-saqlangan" onclick="setTab('saqlangan')">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3H7a2 2 0 0 0-2 2v16l7-4 7 4V5a2 2 0 0 0-2-2z"/></svg>
   <span class="i18n">Saqlangan</span>
@@ -705,7 +719,23 @@ window.googleChiqish = async function(){
     {arabcha:"اِثْنَان", translit:"ithnan", uzbekcha:"ikki", toifa:"Sonlar"},
     {arabcha:"ثَلَاثَة", translit:"thalathah", uzbekcha:"uch", toifa:"Sonlar"},
     {arabcha:"أَرْبَعَة", translit:"arba'ah", uzbekcha:"to'rt", toifa:"Sonlar"},
-]
+    {arabcha:"خَمْسَة", translit:"khamsah", uzbekcha:"besh", toifa:"Sonlar"},
+    {arabcha:"يَوْم", translit:"yawm", uzbekcha:"kun", toifa:"Vaqt"},
+    {arabcha:"لَيْل", translit:"layl", uzbekcha:"tun", toifa:"Vaqt"},
+    {arabcha:"صَبَاح", translit:"sabah", uzbekcha:"ertalab", toifa:"Vaqt"},
+    {arabcha:"مَسَاء", translit:"masa'", uzbekcha:"kechqurun", toifa:"Vaqt"},
+    {arabcha:"أُسْبُوع", translit:"usbu'", uzbekcha:"hafta", toifa:"Vaqt"},
+    {arabcha:"أَكَلَ", translit:"akala", uzbekcha:"yedi", toifa:"Fe'llar"},
+    {arabcha:"شَرِبَ", translit:"shariba", uzbekcha:"ichdi", toifa:"Fe'llar"},
+    {arabcha:"ذَهَبَ", translit:"dhahaba", uzbekcha:"bordi", toifa:"Fe'llar"},
+    {arabcha:"جَلَسَ", translit:"jalasa", uzbekcha:"o'tirdi", toifa:"Fe'llar"},
+    {arabcha:"قَرَأَ", translit:"qara'a", uzbekcha:"o'qidi", toifa:"Fe'llar"},
+    {arabcha:"مَدْرَسَة", translit:"madrasah", uzbekcha:"maktab", toifa:"Joylar"},
+    {arabcha:"مَسْجِد", translit:"masjid", uzbekcha:"masjid", toifa:"Joylar"},
+    {arabcha:"سُوق", translit:"suq", uzbekcha:"bozor", toifa:"Joylar"},
+    {arabcha:"مُسْتَشْفَى", translit:"mustashfa", uzbekcha:"kasalxona", toifa:"Joylar"},
+    {arabcha:"مَطْعَم", translit:"mat'am", uzbekcha:"restoran", toifa:"Joylar"}
+];
 
   const davlatlar = [
     {nom: "AQSH", kod: "+1"},
@@ -887,7 +917,7 @@ window.googleChiqish = async function(){
     {nom: "Yangi Zelandiya", kod: "+64"},
     {nom: "Yaponiya", kod: "+81"},
     {nom: "Zambiya", kod: "+260"},
-    {nom: "Zimbabve", kod: "+263"},
+    {nom: "Zimbabve", kod: "+263"}
 ];
 
   let currentLang = 'uz';
@@ -924,39 +954,38 @@ window.googleChiqish = async function(){
         return;
     }
 
-    
-const davlatInput = document.getElementById('kirish-davlat').value.trim();
-const davlatMos = davlatlar.find(d => d.nom === davlatInput);
+    const davlatInput = document.getElementById('kirish-davlat').value.trim();
+    const davlatMos = davlatlar.find(d => d.nom === davlatInput);
 
-if(!davlatMos){
-    xatoText.textContent = "Iltimos, ro'yxatdan davlatni to'g'ri tanlang";
-    xatoText.style.display = 'block';
-    return;
-}
-const davlat = davlatMos.nom;
-const kod = document.getElementById('kirish-kod').textContent;
-const nomerRaqam = document.getElementById('kirish-nomer').value.trim();
-const nomer = nomerRaqam ? (kod + ' ' + nomerRaqam) : '—';
-const ism = document.getElementById('kirish-ism').value.trim();
-const familiya = document.getElementById('kirish-familiya').value.trim();
+    if(!davlatMos){
+        xatoText.textContent = "Iltimos, ro'yxatdan davlatni to'g'ri tanlang";
+        xatoText.style.display = 'block';
+        return;
+    }
+    const davlat = davlatMos.nom;
+    const kod = document.getElementById('kirish-kod').textContent;
+    const nomerRaqam = document.getElementById('kirish-nomer').value.trim();
+    const nomer = nomerRaqam ? (kod + ' ' + nomerRaqam) : '—';
+    const ism = document.getElementById('kirish-ism').value.trim();
+    const familiya = document.getElementById('kirish-familiya').value.trim();
 
-localStorage.setItem('foydalanuvchi_davlat', davlat);
-localStorage.setItem('foydalanuvchi_nomer', nomer);
+    localStorage.setItem('foydalanuvchi_davlat', davlat);
+    localStorage.setItem('foydalanuvchi_nomer', nomer);
 
-saveToFirebase({
-    ism: ism,
-    familiya: familiya,
-    yil: yil,
-    oy: oy,
-    kun: kun,
-    davlat: davlat,
-    nomer: nomer,
-    sana: new Date().toISOString()
-});
+    saveToFirebase({
+        ism: ism,
+        familiya: familiya,
+        yil: yil,
+        oy: oy,
+        kun: kun,
+        davlat: davlat,
+        nomer: nomer,
+        sana: new Date().toISOString()
+    });
 
-xatoText.style.display = 'none';
-goScreen('screen-app');
-setTab('qidiruv');
+    xatoText.style.display = 'none';
+    goScreen('screen-app');
+    setTab('qidiruv');
 }
 
 function mavzuniOrnat(rejim){
@@ -991,6 +1020,11 @@ function translitLatToCyr(str){
     return natija;
 }
 
+function tKr(str){
+    const rejim = localStorage.getItem('yozuv_turi') || 'lotin';
+    return (rejim === 'kirill') ? translitLatToCyr(str) : str;
+}
+
 function elementniOzgartir(el){
     if(!el.dataset.origLotin){
         el.dataset.origLotin = el.textContent;
@@ -1009,6 +1043,11 @@ function yozuvniQollash(){
 function yozuvTuriniOrnat(rejim){
     localStorage.setItem('yozuv_turi', rejim);
     yozuvniQollash();
+    renderChips();
+    tarixniKorsat();
+    if(document.getElementById('tab-saqlangan').style.display === 'block'){
+        saqlanganlarniKorsat();
+    }
 }
 
 function shriftOynasiniOch(){
@@ -1176,6 +1215,18 @@ function avatarniKorsat(){
     document.getElementById('qidiruv').placeholder = lang === 'uz' ? "O'zbekcha so'z kiriting..." : "Arabcha so'z kiriting...";
   }
 
+  function ovozdaOqi(matn){
+    if(!('speechSynthesis' in window)){
+        alert("Kechirasiz, qurilmangiz ovozli o'qishni qo'llab-quvvatlamaydi");
+        return;
+    }
+    const utter = new SpeechSynthesisUtterance(matn);
+    utter.lang = 'ar-SA';
+    utter.rate = 0.8;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(utter);
+  }
+
  async function qidir(){
     const soz = document.getElementById('qidiruv').value.trim();
     const card = document.getElementById('natija-card');
@@ -1189,7 +1240,7 @@ function avatarniKorsat(){
     }
 
    if(topilgan){
-    card.innerHTML = '<div class="result-arabic">' + topilgan.arabcha + '</div><div class="result-translit">' + topilgan.translit + ' &middot; ' + topilgan.uzbekcha + '</div><div class="yulduzcha" onclick="yulduzchaBos(\'' + topilgan.arabcha.replace(/'/g,"\\'") + '\',\'' + topilgan.translit.replace(/'/g,"\\'") + '\',\'' + topilgan.uzbekcha.replace(/'/g,"\\'") + '\')" id="yulduzcha-belgisi">&#9733;</div>';
+    card.innerHTML = '<div class="result-arabic">' + topilgan.arabcha + '</div><div class="result-translit">' + topilgan.translit + ' &middot; ' + tKr(topilgan.uzbekcha) + '</div><div class="yulduzcha" onclick="yulduzchaBos(\'' + topilgan.arabcha.replace(/'/g,"\\'") + '\',\'' + topilgan.translit.replace(/'/g,"\\'") + '\',\'' + topilgan.uzbekcha.replace(/'/g,"\\'") + '\')" id="yulduzcha-belgisi">&#9733;</div><div class="ovoz-tugma" onclick="ovozdaOqi(\'' + topilgan.arabcha.replace(/'/g,"\\'") + '\')">&#128266;</div>';
     yulduzchaHolatiniYangila(topilgan.uzbekcha);
     tarixgaQoshish(topilgan.arabcha, topilgan.translit, topilgan.uzbekcha);
     return;
@@ -1206,14 +1257,14 @@ function avatarniKorsat(){
        if (tarjima && tarjima.toLowerCase() !== soz.toLowerCase()) {
     const arabchaMatn = currentLang === 'uz' ? tarjima : soz;
     const uzbekchaMatn = currentLang === 'uz' ? soz : tarjima;
-    card.innerHTML = '<div class="result-arabic">' + arabchaMatn + '</div><div class="result-translit">internetdan topildi &middot; ' + uzbekchaMatn + '</div><div class="yulduzcha" onclick="yulduzchaBos(\'' + arabchaMatn.replace(/'/g,"\\'") + '\',\'internetdan\',\'' + uzbekchaMatn.replace(/'/g,"\\'") + '\')" id="yulduzcha-belgisi">&#9733;</div>';
+    card.innerHTML = '<div class="result-arabic">' + arabchaMatn + '</div><div class="result-translit">internetdan topildi &middot; ' + tKr(uzbekchaMatn) + '</div><div class="yulduzcha" onclick="yulduzchaBos(\'' + arabchaMatn.replace(/'/g,"\\'") + '\',\'internetdan\',\'' + uzbekchaMatn.replace(/'/g,"\\'") + '\')" id="yulduzcha-belgisi">&#9733;</div><div class="ovoz-tugma" onclick="ovozdaOqi(\'' + arabchaMatn.replace(/'/g,"\\'") + '\')">&#128266;</div>';
     yulduzchaHolatiniYangila(uzbekchaMatn);
     tarixgaQoshish(arabchaMatn, 'internetdan', uzbekchaMatn);
 } else {
             card.innerHTML = '<span class="result-empty">Bu so\'z topilmadi</span>';
         }
     } catch (error) {
-        card.innerHTML = '<span class="result-empty">Internetga ulanishda xatolik</span>';
+        card.innerHTML = '<span class="result-empty">Internet aloqasi yo\'q yoki uzilgan. Iltimos, internetni tekshirib qaytadan urinib ko\'ring</span>';
     }
 }
 
@@ -1237,7 +1288,7 @@ function renderChips(){
     const wrap = document.getElementById('chip-list');
     let royxat = tanlanganToifa ? sozlar.filter(s => s.toifa === tanlanganToifa) : sozlar.slice(3, 11);
     wrap.innerHTML = royxat.map(s =>
-        '<span class="word-chip" onclick="showChip(\'' + s.uzbekcha + '\')">' + s.uzbekcha + '</span>'
+        '<span class="word-chip" onclick="showChip(\'' + s.uzbekcha + '\')">' + tKr(s.uzbekcha) + '</span>'
     ).join('');
 }
 
@@ -1265,7 +1316,7 @@ function tarixniKorsat(){
 
     label.style.display = 'block';
     list.innerHTML = tarix.map(t =>
-        '<span class="word-chip" onclick="tarixdanQidir(\'' + t.uzbekcha.replace(/'/g, "\\'") + '\')">' + t.uzbekcha + '</span>'
+        '<span class="word-chip" onclick="tarixdanQidir(\'' + t.uzbekcha.replace(/'/g, "\\'") + '\')">' + tKr(t.uzbekcha) + '</span>'
     ).join('');
 }
 
@@ -1326,7 +1377,7 @@ function saqlanganlarniKorsat(){
         '<div class="result-card" style="text-align:left; padding:16px 20px; flex-direction:row; align-items:center; justify-content:space-between; margin-bottom:10px;">' +
             '<div>' +
                 '<div style="font-family:\'Amiri\', serif; font-size:22px; color:var(--gold);">' + s.arabcha + '</div>' +
-                '<div style="font-size:12px; color:var(--teal); margin-top:4px;">' + s.translit + ' &middot; ' + s.uzbekcha + '</div>' +
+                '<div style="font-size:12px; color:var(--teal); margin-top:4px;">' + s.translit + ' &middot; ' + tKr(s.uzbekcha) + '</div>' +
             '</div>' +
             '<span onclick="yulduzchaBos(\'' + s.arabcha.replace(/'/g,"\\'") + '\',\'' + s.translit.replace(/'/g,"\\'") + '\',\'' + s.uzbekcha.replace(/'/g,"\\'") + '\'); saqlanganlarniKorsat();" style="color:var(--gold); font-size:22px; cursor:pointer;">&#9733;</span>' +
         '</div>'
