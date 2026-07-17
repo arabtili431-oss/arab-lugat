@@ -1,8 +1,0 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "io.github.arabtili431_oss.twa",
-    "sha256_cert_fingerprints": ["B1:B5:4B:C3:04:8E:E4:26:F5:F9:B8:A7:D6:93:67:13:E1:AD:30:24:E0:0B:C0:AD:E5:11:B0:5C:B9:37:98:8E"]
-  }
-}]
