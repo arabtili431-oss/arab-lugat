@@ -602,6 +602,7 @@ window.googleChiqish = async function(){
 </div>
 
     <div class="screen-body" id="tab-dastur" style="display:none;">
+  <button onclick="ilovaHaqidaYop()" style="background:none; border:none; color:var(--gold); font-size:14px; margin-bottom:16px; cursor:pointer;">&#8592; Orqaga</button>
   <h1 class="title i18n" style="font-size:24px;">Dastur haqida</h1>
   <div class="about-block">
     <p><b class="i18n">Arabcha Lug'at</b> <span class="i18n">— A1 darajadagi arab tili o'rganuvchilar uchun yaratilgan kichik lug'at ilovasi.</span></p><br>
@@ -667,7 +668,7 @@ window.googleChiqish = async function(){
   </div>
 
   <div class="word-list-label i18n">Ilova haqida</div>
-  <div class="help-item" style="margin-bottom:24px;" onclick="setTab('dastur')">
+  <div class="help-item" style="margin-bottom:24px;" onclick="ilovaHaqidaOch()">
     <div class="help-icon">&#8505;</div>
     <div><p class="i18n">Ilova haqida</p><span class="i18n">Lug'at ilovasi haqida ma'lumot</span></div>
   </div>
@@ -1227,6 +1228,17 @@ function avatarniKorsat(){
     if(tab === 'saqlangan'){
         saqlanganlarniKorsat();
     }
+}
+
+function ilovaHaqidaOch(){
+    document.querySelectorAll('.screen-body').forEach(s => {
+        if(s.id !== 'shrift-overlay') s.style.display = 'none';
+    });
+    document.getElementById('tab-dastur').style.display = 'block';
+}
+
+function ilovaHaqidaYop(){
+    setTab('profil');
 }
 
   function setLang(lang){
