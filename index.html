@@ -318,12 +318,6 @@ body.light-mode .phone{
     color:var(--text);
     cursor:pointer;
   }
-  .word-chip:hover{ border-color:var(--gold); }
-  .toifa-chip.active{
-    background: var(--gold);
-    color: #20160a;
-    border-color: var(--gold);
-  }
 
   .about-block{
     background:var(--night-2);
@@ -568,12 +562,6 @@ window.googleChiqish = async function(){
   <span class="i18n" style="float:right; color:var(--teal); cursor:pointer; text-transform:none; font-weight:400;" onclick="tarixniTozala()">Tozalash</span>
 </div>
 <div id="tarix-list"></div>
-
-<div class="word-list-label i18n">Kategoriyalar</div>
-<div id="toifa-list" style="margin-bottom:20px;"></div>
-
-<div class="word-list-label i18n">So'zlar</div>
-<div id="chip-list"></div>
     </div>
 
     <div id="shrift-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:100; align-items:flex-end; justify-content:center;" onclick="if(event.target===this) shriftOynasiniYop()">
@@ -1214,10 +1202,8 @@ function avatarniKorsat(){
         localStorage.setItem('foydalanuvchi_ism', kirishIsm);
         localStorage.setItem('foydalanuvchi_familiya', kirishFamiliya);
     }
-    toifalarniKorsat();
-    renderChips();
-}
-}
+  }
+ }
 
   function setTab(tab){
     ['qidiruv','saqlangan','yordam','profil'].forEach(t => {
@@ -1302,30 +1288,6 @@ function ilovaHaqidaYop(){
     } catch (error) {
         card.innerHTML = '<span class="result-empty">Internet aloqasi yo\'q yoki uzilgan. Iltimos, internetni tekshirib qaytadan urinib ko\'ring</span>';
     }
-}
-
-  let tanlanganToifa = null;
-
-function toifalarniKorsat(){
-    const toifalar = [...new Set(sozlar.map(s => s.toifa))];
-    const wrap = document.getElementById('toifa-list');
-    wrap.innerHTML = toifalar.map(t =>
-        '<span class="word-chip toifa-chip' + (t === tanlanganToifa ? ' active' : '') + '" onclick="toifaTanla(\'' + t + '\')">' + t + '</span>'
-    ).join('');
-}
-
-function toifaTanla(toifa){
-    tanlanganToifa = (tanlanganToifa === toifa) ? null : toifa;
-    toifalarniKorsat();
-    renderChips();
-}
-
-function renderChips(){
-    const wrap = document.getElementById('chip-list');
-    let royxat = tanlanganToifa ? sozlar.filter(s => s.toifa === tanlanganToifa) : sozlar.slice(3, 11);
-    wrap.innerHTML = royxat.map(s =>
-        '<span class="word-chip" onclick="showChip(\'' + s.uzbekcha + '\')">' + tKr(s.uzbekcha) + '</span>'
-    ).join('');
 }
 
   function tarixgaQoshish(arabcha, translit, uzbekcha){
