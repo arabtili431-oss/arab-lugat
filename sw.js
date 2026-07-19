@@ -1,4 +1,4 @@
-const CACHE_NAME = 'arab-lugat-v1';
+const CACHE_NAME = 'arab-lugat-v2';
 const FAYLLAR = [
   './',
   './index.html',
@@ -37,6 +37,28 @@ self.addEventListener('fetch', function(event){
     return;
   }
 
+  // HTML fayllar uchun: avval tarmoqdan (network-first) urinamiz, shunda
+  // yangilanishlar darhol ko'rinadi. Faqat internet yo'q bo'lsa keshdan olamiz.
+  if (event.request.mode === 'navigate' || url.pathname.endsWith('index.html') || url.pathname === '/' || url.pathname.endsWith('/')) {
+    event.respondWith(
+      fetch(event.request).then(function(javob){
+        if (javob && javob.status === 200) {
+          const nusxa = javob.clone();
+          caches.open(CACHE_NAME).then(function(cache){
+            cache.put(event.request, nusxa);
+          });
+        }
+        return javob;
+      }).catch(function(){
+        return caches.match(event.request).then(function(keshdagi){
+          return keshdagi || caches.match('./index.html');
+        });
+      })
+    );
+    return;
+  }
+
+  // Boshqa fayllar (ikonka, manifest va h.k.) uchun avvalgidek kesh-birinchi
   event.respondWith(
     caches.match(event.request).then(function(keshdagi){
       if (keshdagi) {
